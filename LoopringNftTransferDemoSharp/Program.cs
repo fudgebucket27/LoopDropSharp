@@ -21,14 +21,15 @@ IConfiguration config = new ConfigurationBuilder()
     .Build();
 Settings settings = config.GetRequiredSection("Settings").Get<Settings>();
 
-string loopringApiKey = settings.LoopringApiKey;//loopring api key
-string loopringPrivateKey = settings.LoopringPrivateKey; //loopring private key
+string loopringApiKey = settings.LoopringApiKey;//loopring api key KEEP PRIVATE
+string loopringPrivateKey = settings.LoopringPrivateKey; //loopring private key KEEP PRIVATE
+var metamaskPrivateKey = settings.MetamaskPrivateKey; //metamask private key KEEP PRIVATE
 var fromAddress = settings.LoopringAddress; //your loopring address
 var fromAccountId = settings.LoopringAccountId; //your loopring account id
 var validUntil = settings.ValidUntil; //the examples seem to use this number
 var maxFeeTokenId = settings.MaxFeeTokenId; //0 should be for ETH, 1 is for LRC?
 var exchange = settings.Exchange; //loopring exchange address, shouldn't need to change this,
-var metamaskPrivateKey = settings.MetamaskPrivateKey; //metamask private key
+
 int toAccountId = 0; //leave this as 0 DO NOT CHANGE
 
 //Initialize loopring service
