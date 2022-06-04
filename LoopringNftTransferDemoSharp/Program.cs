@@ -21,8 +21,8 @@ IConfiguration config = new ConfigurationBuilder()
     .Build();
 Settings settings = config.GetRequiredSection("Settings").Get<Settings>();
 
-string loopringApiKey = settings.LoopringApiKey;//you can either set an environmental variable or input it here directly. You can export this from your account using loopring.io
-string loopringPrivateKey = settings.LoopringPrivateKey; //you can either set an environmental variable or input it here directly. You can export this from your account using loopring.io
+string loopringApiKey = settings.LoopringApiKey;//loopring api key
+string loopringPrivateKey = settings.LoopringPrivateKey; //loopring private key
 var fromAddress = settings.LoopringAddress; //your loopring address
 var fromAccountId = settings.LoopringAccountId; //your loopring account id
 var validUntil = settings.ValidUntil; //the examples seem to use this number
