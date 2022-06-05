@@ -46,9 +46,9 @@ A successful NFT transfer will return the following JSON response:
 }
 ```
 
-Credits
-Thanks to ItsMonty.eth for the original NFT Transfer code which was written in Python which I converted to C#.
+## Credits
+Thanks to ItsMonty.eth for the original NFT Transfer code in thge [LoopPyMinty](https://github.com/Montspy/LooPyMinty) repo which I converted to C#.
 
-Also thanks to Taranasus for the original C# code from his LoopringSharp repo for the ECDSA signing which I also used.
+Also thanks to Taranasus for his [LoopringSharp](https://github.com/taranasus/LoopringSharp) repo for the ECDSA signing which I also used.
 
 I also used my own PoseidonSharp library for generating the Poseidon hashes and EDDSA signing.
