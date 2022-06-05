@@ -29,7 +29,6 @@ var fromAccountId = settings.LoopringAccountId; //your loopring account id
 var validUntil = settings.ValidUntil; //the examples seem to use this number
 var maxFeeTokenId = settings.MaxFeeTokenId; //0 should be for ETH, 1 is for LRC?
 var exchange = settings.Exchange; //loopring exchange address, shouldn't need to change this,
-
 int toAccountId = 0; //leave this as 0 DO NOT CHANGE
 
 //Initialize loopring service
