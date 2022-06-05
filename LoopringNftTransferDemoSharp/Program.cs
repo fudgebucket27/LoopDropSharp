@@ -87,7 +87,7 @@ eip712TypedData.Types = new Dictionary<string, MemberDescription[]>()
     [primaryTypeName] = new[]
         {
                         new MemberDescription {Name = "from", Type = "address"},            // payerAddr
-                        new MemberDescription {Name = "to", Type = "address"},              // payeeAddr
+                        new MemberDescription {Name = "to", Type = "address"},              // toAddr
                         new MemberDescription {Name = "tokenID", Type = "uint16"},          // token.tokenId 
                         new MemberDescription {Name = "amount", Type = "uint96"},           // token.volume 
                         new MemberDescription {Name = "feeTokenID", Type = "uint16"},       // maxFee.tokenId
