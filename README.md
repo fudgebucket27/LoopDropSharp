@@ -47,7 +47,7 @@ A successful NFT transfer will return the following JSON response:
 ```
 
 ## Credits
-Thanks to ItsMonty.eth for the original NFT Transfer code in the [LoopPyMinty](https://github.com/Montspy/LooPyMinty) repo which I converted to C#.
+Thanks to ItsMonty.eth for the original NFT Transfer code in the [LooPyMinty](https://github.com/Montspy/LooPyMinty) repo which I converted to C#.
 
 Also thanks to Taranasus for his [LoopringSharp](https://github.com/taranasus/LoopringSharp) repo for the ECDSA signing which I also used.
 
