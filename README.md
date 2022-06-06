@@ -7,7 +7,7 @@ DO NOT SHARE ANY API OR PRIVATE KEYS with anyone else!!!!!!!
 
 This was written in .NET 6 so you need an IDE that can compile it. 
 
-You will need to setup an "appsettings.json" in the project directory like below with the property "Copy to Output Directory" set to "Copy Always".
+You will need to setup an "appsettings.json" file in the project directory like below with the property "Copy to Output Directory" set to "Copy Always".
 
 ```json
 {
