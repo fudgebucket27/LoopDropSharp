@@ -1,5 +1,5 @@
-# LoopringNftTransferDemoSharp
-This is a demo repo to show how to do NFT transfers between accounts on Loopring in C#.
+# LoopringBatchNftTransferDemoSharp
+This is a demo repo to show how to Batch transfer 1 NFT to multiple accounts on Loopring in C#.
 
 It uses a ***Metamask*** private key to sign the transfers so you will need to export that out from your Metamask account. You can export the Loopring related account details from the "Security" tab while logged into https://loopring.io. Make sure these details are from the same account!
 
@@ -24,14 +24,14 @@ You will need to setup an "appsettings.json" file in the project directory like 
 }
 ```
 
-Lines 12-15 in the Program.cs file are what need to be changed with the nftAmount, nftTokenId, nftData and toAddress.
+Lines 12-15 in the Program.cs file are what need to be changed with the nftAmount, nftTokenId, and nftData.
 
 ```csharp
 string nftAmount = "1"; //the amount of the nft to transfer
 int nftTokenId = 34008; //the nft tokenId, not the nftId
 string nftData = "0x18c28cdd97789a7a82603b9a4618dd711660e7231cd6e14087baa858de483e32"; //the nftData, not nftId
-string toAddress = "0x99fdddfdc9277404db0379009274cc98d3688f8b"; //the Address to send it to
 ```
+In the walletAddresses.txt located in the project directory add your wallet address. You will have one wallet address on one line. Each wallet address will be one transfer. Be sure to have enough LRC for each transfer. 
 
 A successful NFT transfer will return the following JSON response:
 
@@ -47,6 +47,8 @@ A successful NFT transfer will return the following JSON response:
 ```
 
 ## Credits
+I forked Fudgey's Repo and added a few lines of code. all credit goes to him. 
+
 Thanks to ItsMonty.eth for the original NFT Transfer code in the [LooPyMinty](https://github.com/Montspy/LooPyMinty) repo which I converted to C#.
 
 Also thanks to Taranasus for his [LoopringSharp](https://github.com/taranasus/LoopringSharp) repo for the ECDSA signing which I also used.
