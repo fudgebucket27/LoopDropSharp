@@ -1,5 +1,5 @@
 # LoopringBatchNftTransferDemoSharp
-This is a demo repo to show how to Batch transfer 1 NFT to multiple accounts on Loopring in C#.
+This is Fudgey's demo repo modified to Batch transfer 1 NFT to multiple accounts on Loopring in C#.
 
 It uses a ***Metamask*** private key to sign the transfers so you will need to export that out from your Metamask account. You can export the Loopring related account details from the "Security" tab while logged into https://loopring.io. Make sure these details are from the same account!
 
