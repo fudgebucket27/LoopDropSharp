@@ -7,11 +7,12 @@ using Newtonsoft.Json;
 using PoseidonSharp;
 using System.Numerics;
 using Type = LoopNftTransferDemoSharp.Type;
+using System.Collections.Generic;
 
 //Change these
 string nftAmount = "1"; //the amount of the nft to transfer
-int nftTokenId = 32770; //the nft tokenId, not the nftId
-string nftData = "0x0dce131e01850a42c3ed9638df7a5b9eb52f9986ee9d2851e739f0377c901418"; //the nftData, not nftId
+int nftTokenId = 32769; //the nft tokenId, not the nftId
+string nftData = "0x15fcb11286fbdcdcffb0ccfd40da0af9f53f6cd8251bb24ded55bbd36601688b"; //the nftData, not nftId
 
 //Settings loaded from the appsettings.json file
 IConfiguration config = new ConfigurationBuilder()
@@ -32,10 +33,10 @@ int toAccountId = 0; //leave this as 0 DO NOT CHANGE
 
 //added lines 35 - 39 and the close curley brackets at 190 and 191.
 //be sure to add a text file with all the wallet addresses. one on each line.
-using (StreamReader sr = new StreamReader("C:\\Code\\LoopringNftTransferDemoSharp\\walletAddresses.txt"))
+using (StreamReader sr = new StreamReader(".\\..\\..\\..\\walletAddresses.txt"))
 {
     string toAddress;
-    while ((toAddress = sr.ReadLine()) != null)
+    while ((toAddress = sr.ReadLine().TrimEnd()) != null)
     {
 
         //Initialize loopring service
