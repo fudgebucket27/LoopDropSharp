@@ -1,13 +1,13 @@
 # LoopringBatchNftTransferDemoSharp
 This is Fudgey's demo repo modified to Batch transfer a specific NFT to multiple accounts on Loopring in C#.
 
-It uses a ***Metamask*** private key to sign the transfers so you will need to export that out from your Metamask account. You can export the Loopring related account details from the "Security" tab while logged into https://loopring.io. Make sure these details are from the same account!
+It uses a ***Metamask/GameStop*** private key to sign the transfers so you will need to export that out from your Metamask/GameStop account. You can export the Loopring related account details from the "Security" tab while logged into https://loopring.io. Make sure these details are from the same account.
 
 DO NOT SHARE ANY API OR PRIVATE KEYS with anyone else!!!!!!!
 
 This was written in .NET 6 so you need an IDE that can compile it. 
 
-You will need to setup an "appsettings.json" file in the project directory like below with the property "Copy to Output Directory" set to "Copy Always".
+You will need to change the "appsettings.json" file in the project directory with the necessary information.
 
 ```json
 {
@@ -23,15 +23,9 @@ You will need to setup an "appsettings.json" file in the project directory like 
   }
 }
 ```
+In the walletAddresses.txt located in the project directory add your wallet address. You will have one wallet address on one line. Each wallet address will be one transfer. You can add a long wallet address or the ENS. Be sure to have enough LRC for each transfer.
 
-Lines 12-15 in the Program.cs file are what need to be changed with the nftAmount, nftTokenId, and nftData.
-
-```csharp
-string nftAmount = "1"; //the amount of the nft to transfer
-int nftTokenId = 34008; //the nft tokenId, not the nftId
-string nftData = "0x18c28cdd97789a7a82603b9a4618dd711660e7231cd6e14087baa858de483e32"; //the nftData, not nftId
-```
-In the walletAddresses.txt located in the project directory add your wallet address. You will have one wallet address on one line. Each wallet address will be one transfer. Be sure to have enough LRC for each transfer.
+After setting up the appsettings.json and walletAddresses.txt, execute the solution. You will need to give it the nftData (not the nftId) of the NFT you want to transfer and the amount you want to transfer to each wallet. 
 
 A successful NFT transfer will return the following JSON response:
 
