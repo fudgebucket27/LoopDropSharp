@@ -11,8 +11,8 @@ using System.Collections.Generic;
 
 //Change these
 string nftAmount = "1"; //the amount of the nft to transfer
-int nftTokenId = 32786; //the nft tokenId, not the nftId
-string nftData = "0x2878e7e3df20dca14070f915c58ace35b4f40bff7390a3182edc41f93f2a6a05"; //the nftData, not nftId
+int nftTokenId = 32769; //the nft tokenId, not the nftId
+string nftData = "0x15fcb11286fbdcdcffb0ccfd40da0af9f53f6cd8251bb24ded55bbd36601688b"; //the nftData, not nftId
 
 //Settings loaded from the appsettings.json file
 IConfiguration config = new ConfigurationBuilder()
@@ -39,7 +39,8 @@ using (StreamReader sr = new StreamReader(".\\..\\..\\..\\walletAddresses.txt"))
     while ((toAddress = sr.ReadLine()) != null)
     {
         //remove whitespace after wallet address if it exists.
-        toAddress = toAddress.TrimEnd();
+        toAddress = toAddress.ToLower().TrimEnd();
+
         //Initialize loopring service
         ILoopringService loopringService = new LoopringService();
 
@@ -50,6 +51,16 @@ using (StreamReader sr = new StreamReader(".\\..\\..\\..\\walletAddresses.txt"))
         //Getting the offchain fee
         var offChainFee = await loopringService.GetOffChainFee(loopringApiKey, fromAccountId, 11, "0");
         Console.WriteLine($"Offchain fee: {JsonConvert.SerializeObject(offChainFee, Formatting.Indented)}");
+
+        //check for ens and convert to long wallet address if so
+        if (toAddress.Contains(".eth"))
+        {
+            var varHexAddress = await loopringService.GetHexAddress(settings.LoopringApiKey, toAddress);
+            if (!String.IsNullOrEmpty(varHexAddress.data))
+            {
+                toAddress = varHexAddress.data;
+            }
+        }
 
         //Calculate eddsa signautre
         BigInteger[] poseidonInputs =

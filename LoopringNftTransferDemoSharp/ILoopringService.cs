@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LoopringNftTransferDemoSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,5 +28,6 @@ namespace LoopNftTransferDemoSharp
                  string ecdsaSignature,
                  string nftData
                  );
+        Task<EnsResult> GetHexAddress(string apiKey, string ens);
     }
 }

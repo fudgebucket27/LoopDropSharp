@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using LoopringNftTransferDemoSharp;
+using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -105,6 +106,24 @@ namespace LoopNftTransferDemoSharp
             catch (HttpRequestException httpException)
             {
                 Console.WriteLine($"Error submitting nft transfer: {httpException.Message}");
+                return null;
+            }
+        }
+
+        public async Task<EnsResult> GetHexAddress(string apiKey, string ens)
+        {
+            var request = new RestRequest("api/wallet/v3/resolveEns");
+            request.AddHeader("x-api-key", apiKey);
+            request.AddParameter("fullName", ens);
+            try
+            {
+                var response = await _client.GetAsync(request);
+                var data = JsonConvert.DeserializeObject<EnsResult>(response.Content!);
+                return data;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Console.WriteLine($"Error getting ens: {httpException.Message}");
                 return null;
             }
         }
