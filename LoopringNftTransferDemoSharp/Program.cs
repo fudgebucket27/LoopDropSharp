@@ -10,9 +10,11 @@ using Type = LoopNftTransferDemoSharp.Type;
 using System.Collections.Generic;
 
 //Change these
-string nftAmount = "1"; //the amount of the nft to transfer
-int nftTokenId = 32769; //the nft tokenId, not the nftId
-string nftData = "0x15fcb11286fbdcdcffb0ccfd40da0af9f53f6cd8251bb24ded55bbd36601688b"; //the nftData, not nftId
+Console.WriteLine("Hello, enter the NftData");
+string nftData = Console.ReadLine(); //the amount of the nft to transfer
+Console.WriteLine("How many do you want to transfer to each address?");
+string nftAmount= Console.ReadLine(); //the nftData, not nftId
+//int nftTokenId = 1;
 
 //Settings loaded from the appsettings.json file
 IConfiguration config = new ConfigurationBuilder()
@@ -31,6 +33,10 @@ var maxFeeTokenId = settings.MaxFeeTokenId; //0 should be for ETH, 1 is for LRC?
 var exchange = settings.Exchange; //loopring exchange address, shouldn't need to change this,
 int toAccountId = 0; //leave this as 0 DO NOT CHANGE
 
+ILoopringService loopringService = new LoopringService();
+var userNftToken = await loopringService.GetTokenId(settings.LoopringApiKey, settings.LoopringAccountId, nftData);  //the nft tokenId, not the nftId
+int nftTokenId = userNftToken.data[0].tokenId;
+
 //added lines 35 - 39 and the close curley brackets at 190 and 191.
 //be sure to add a text file with all the wallet addresses. one on each line.
 using (StreamReader sr = new StreamReader(".\\..\\..\\..\\walletAddresses.txt"))
@@ -42,7 +48,7 @@ using (StreamReader sr = new StreamReader(".\\..\\..\\..\\walletAddresses.txt"))
         toAddress = toAddress.ToLower().TrimEnd();
 
         //Initialize loopring service
-        ILoopringService loopringService = new LoopringService();
+        //ILoopringService loopringService = new LoopringService();
 
         //Storage id
         var storageId = await loopringService.GetNextStorageId(loopringApiKey, fromAccountId, nftTokenId);

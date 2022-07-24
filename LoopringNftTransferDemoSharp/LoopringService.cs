@@ -128,6 +128,24 @@ namespace LoopNftTransferDemoSharp
             }
         }
 
+        public async Task<NftBalance> GetTokenId(string apiKey, int accountId, string nftData)
+        {
+            var request = new RestRequest("/api/v3/user/nft/balances");
+            request.AddHeader("x-api-key", apiKey);
+            request.AddParameter("accountId", accountId);
+            request.AddParameter("nftDatas", nftData);
+            try
+            {
+                var response = await _client.GetAsync(request);
+                var data = JsonConvert.DeserializeObject<NftBalance>(response.Content!);
+                return data;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                return null;
+            }
+        }
 
         public void Dispose()
         {

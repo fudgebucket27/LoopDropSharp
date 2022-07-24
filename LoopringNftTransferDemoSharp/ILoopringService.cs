@@ -29,5 +29,6 @@ namespace LoopNftTransferDemoSharp
                  string nftData
                  );
         Task<EnsResult> GetHexAddress(string apiKey, string ens);
+        Task<NftBalance> GetTokenId(string apiKey, int accountId, string nftData);
     }
 }
