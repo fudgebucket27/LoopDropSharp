@@ -147,6 +147,25 @@ namespace LoopNftTransferDemoSharp
             }
         }
 
+        public async Task<NftData> GetNftData(string nftId, string minter, string tokenAddress)
+        {
+            var request = new RestRequest("/api/v3/nft/info/nftData");
+            request.AddParameter("nftId", nftId);
+            request.AddParameter("minter", minter);
+            request.AddParameter("tokenAddress", tokenAddress);
+            try
+            {
+                var response = await _client.GetAsync(request);
+                var data = JsonConvert.DeserializeObject<NftData>(response.Content!);
+                return data;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                return null;
+            }
+        }
+
         public void Dispose()
         {
             _client?.Dispose();

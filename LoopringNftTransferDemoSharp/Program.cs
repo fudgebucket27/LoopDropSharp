@@ -8,20 +8,49 @@ using PoseidonSharp;
 using System.Numerics;
 using Type = LoopNftTransferDemoSharp.Type;
 using System.Collections.Generic;
+using LoopringNftTransferDemoSharp;
 
-//Change these
-Console.WriteLine("Hello, enter the NftData");
-string nftData = Console.ReadLine(); //the amount of the nft to transfer
-Console.WriteLine("How many do you want to transfer to each address?");
-string nftAmount= Console.ReadLine(); //the nftData, not nftId
-//int nftTokenId = 1;
-
+string nftData = "";
+ILoopringService loopringService = new LoopringService();
 //Settings loaded from the appsettings.json file
 IConfiguration config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .AddEnvironmentVariables()
     .Build();
 Settings settings = config.GetRequiredSection("Settings").Get<Settings>();
+
+Font.SetTextToBlue("Hey there. Welcome to the Airdrop Tool.");
+Console.WriteLine("Before you airdrop, be sure to setup your appsetting.json and walletAddresses.txt.");
+Console.WriteLine("After the two are setup, answer the following questions to Airdrop your Nft.");
+Font.SetTextToBlue("Do you know your Nft's NftData (not the NftId)?");
+string userResponse = Console.ReadLine().ToLower();
+while ((userResponse != "yes") && (userResponse != "no"))
+{
+    Font.SetTextToBlue("Please answer yes or no.");
+    userResponse = Console.ReadLine().ToLower();
+}
+if (userResponse == "yes")
+{
+    Font.SetTextToBlue("Enter the NftData");
+    nftData = Console.ReadLine(); //the amount of the nft to transfer
+}
+else 
+{
+    Console.WriteLine("Find your Nft on lexplorer.io or explorer.loopring.io.");
+    Console.WriteLine("You should see the Nft Id, Minter, and Token Address");
+    Font.SetTextToBlue("Enter in the NFT Id");
+    string nftId = Console.ReadLine(); //the amount of the nft to transfer
+    Font.SetTextToBlue("Enter in the Minter");
+    string minter = Console.ReadLine(); //the amount of the nft to transfer
+    Font.SetTextToBlue("Enter in the Token Address");
+    string tokenAddress = Console.ReadLine(); //the amount of the nft to transfer
+
+    var nftdataRequest = await loopringService.GetNftData(nftId, minter, tokenAddress);  //the nft tokenId, not the nftId
+    nftData = nftdataRequest.nftData;
+
+}
+Console.WriteLine("How many do you want to transfer to each address?");
+string nftAmount = Console.ReadLine(); //the nftData, not nftId
 
 string loopringApiKey = settings.LoopringApiKey;//loopring api key KEEP PRIVATE
 string loopringPrivateKey = settings.LoopringPrivateKey; //loopring private key KEEP PRIVATE
@@ -33,7 +62,6 @@ var maxFeeTokenId = settings.MaxFeeTokenId; //0 should be for ETH, 1 is for LRC?
 var exchange = settings.Exchange; //loopring exchange address, shouldn't need to change this,
 int toAccountId = 0; //leave this as 0 DO NOT CHANGE
 
-ILoopringService loopringService = new LoopringService();
 var userNftToken = await loopringService.GetTokenId(settings.LoopringApiKey, settings.LoopringAccountId, nftData);  //the nft tokenId, not the nftId
 int nftTokenId = userNftToken.data[0].tokenId;
 
