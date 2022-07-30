@@ -50,7 +50,7 @@ else
     nftData = nftdataRequest.nftData;
 
 }
-Console.WriteLine("How many do you want to transfer to each address?");
+Font.SetTextToBlue("How many do you want to transfer to each address?");
 string nftAmount = Console.ReadLine(); //the nftData, not nftId
 
 string loopringApiKey = settings.LoopringApiKey;//loopring api key KEEP PRIVATE
@@ -98,6 +98,7 @@ using (StreamReader sr = new StreamReader(".\\..\\..\\..\\walletAddresses.txt"))
             else
             {
                 invalidAddress.Add(toAddress);
+                Thread.Sleep(1); //for a rate limiter just incase multiple invalid ens
                 continue;
             }
         }
