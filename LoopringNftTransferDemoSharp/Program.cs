@@ -12,6 +12,7 @@ using LoopringNftTransferDemoSharp;
 
 string nftData = "";
 ILoopringService loopringService = new LoopringService();
+List<string> invalidAddress = new List<string>();
 //Settings loaded from the appsettings.json file
 IConfiguration config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
@@ -93,6 +94,11 @@ using (StreamReader sr = new StreamReader(".\\..\\..\\..\\walletAddresses.txt"))
             if (!String.IsNullOrEmpty(varHexAddress.data))
             {
                 toAddress = varHexAddress.data;
+            }
+            else
+            {
+                invalidAddress.Add(toAddress);
+                continue;
             }
         }
 
@@ -234,5 +240,10 @@ using (StreamReader sr = new StreamReader(".\\..\\..\\..\\walletAddresses.txt"))
 
         Console.WriteLine(nftTransferResponse);
 
+    }
+    Console.WriteLine($"The following were invalid addresses that did not receive an NFT:");
+    foreach (var address in invalidAddress)
+    {
+        Console.WriteLine(address);
     }
 }
