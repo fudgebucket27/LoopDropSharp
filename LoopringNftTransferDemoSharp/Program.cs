@@ -11,8 +11,10 @@ using System.Collections.Generic;
 using LoopringNftTransferDemoSharp;
 
 string nftData = "";
+string ensAddress = "";
 ILoopringService loopringService = new LoopringService();
 List<string> invalidAddress = new List<string>();
+List<string> validAddress = new List<string>();
 //Settings loaded from the appsettings.json file
 IConfiguration config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
@@ -73,6 +75,7 @@ using (StreamReader sr = new StreamReader(".\\..\\..\\..\\walletAddresses.txt"))
     string toAddress;
     while ((toAddress = sr.ReadLine()) != null)
     {
+        int ensFlag = 0;
         //remove whitespace after wallet address if it exists.
         toAddress = toAddress.ToLower().TrimEnd();
 
@@ -93,6 +96,8 @@ using (StreamReader sr = new StreamReader(".\\..\\..\\..\\walletAddresses.txt"))
             var varHexAddress = await loopringService.GetHexAddress(settings.LoopringApiKey, toAddress);
             if (!String.IsNullOrEmpty(varHexAddress.data))
             {
+                ensFlag = 1;
+                ensAddress = toAddress;
                 toAddress = varHexAddress.data;
             }
             else
@@ -240,10 +245,24 @@ using (StreamReader sr = new StreamReader(".\\..\\..\\..\\walletAddresses.txt"))
             );
 
         Console.WriteLine(nftTransferResponse);
+        if (ensFlag == 1)
+        {
+            validAddress.Add(ensAddress);
+        }
+        else
+        {
+            validAddress.Add(toAddress);
+        }
+        
 
     }
     Console.WriteLine($"The following were invalid addresses that did not receive an NFT:");
     foreach (var address in invalidAddress)
+    {
+        Console.WriteLine(address);
+    }
+    Console.WriteLine($"The following were valid addresses that did receive an NFT:");
+    foreach (var address in validAddress)
     {
         Console.WriteLine(address);
     }
