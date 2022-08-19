@@ -17,5 +17,37 @@ namespace LoopNftTransferDemoSharp
                 parsResult = BigInteger.Parse("0" + toParse, System.Globalization.NumberStyles.HexNumber);
             return parsResult;
         }
+
+        public static string CheckYesOrNo(string userResponse)
+        {
+            userResponse = Console.ReadLine().ToLower();
+            while ((userResponse != "yes") && (userResponse != "no"))
+            {
+                LoopringNftTransferDemoSharp.Font.SetTextToYellow("Please answer yes or no.");
+                userResponse = Console.ReadLine().ToLower();
+            }
+            return userResponse;
+        }
+
+        public static string CheckYes(string userResponse)
+        {
+            userResponse = Console.ReadLine().ToLower();
+            while (userResponse != "yes")
+            {
+                LoopringNftTransferDemoSharp.Font.SetTextToYellow("Please answer yes when you are ready.");
+                userResponse = Console.ReadLine().ToLower();
+            }
+            return userResponse;
+        }
+        public static string CheckUtilityNumber(string userResponse)
+        {
+            userResponse = Console.ReadLine();
+            while ((userResponse != "1") && (userResponse != "2"))
+            {
+                LoopringNftTransferDemoSharp.Font.SetTextToYellow("Please type a number between 1 and 2.");
+                userResponse = Console.ReadLine();
+            }
+            return userResponse;
+        }
     }
 }
