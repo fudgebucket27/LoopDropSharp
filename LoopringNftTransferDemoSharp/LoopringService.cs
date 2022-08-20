@@ -166,6 +166,56 @@ namespace LoopNftTransferDemoSharp
             }
         }
 
+        public async Task<List<NftHoldersAndTotal>> GetNftHolders(string apiKey, string nftData)
+        {
+            var allData = new List<NftHoldersAndTotal>();
+            var request = new RestRequest("/api/v3/nft/info/nftHolders");
+            request.AddHeader("X-API-KEY", apiKey);
+            request.AddParameter("nftData", nftData);
+            request.AddParameter("limit", 100);
+            try
+            {
+                var offset = 100;
+                var response = await _client.GetAsync(request);
+                var data = JsonConvert.DeserializeObject<NftHoldersAndTotal>(response.Content!);
+                var total = data.totalNum;
+                allData.Add(data);
+                while (total > 100)
+                {
+                    total = total - 100;
+                    request.AddOrUpdateParameter("offset", offset);
+                    response = await _client.GetAsync(request);
+                    var moreData = JsonConvert.DeserializeObject<NftHoldersAndTotal>(response.Content!);
+                    allData.Add(moreData);
+                    offset = offset + 100;
+                }
+                return allData;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                return null;
+            }
+        }
+
+        public async Task<AccountInformation> GetUserAccountInformation(string accountId)
+        {
+            var request = new RestRequest("/api/v3/account");
+            request.AddParameter("accountId", accountId);
+            try
+            {
+                var response = await _client.GetAsync(request);
+                var data = JsonConvert.DeserializeObject<AccountInformation>(response.Content!);
+                Thread.Sleep(1);
+                return data;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                return null;
+            }
+        }
+
         public void Dispose()
         {
             _client?.Dispose();

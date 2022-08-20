@@ -15,6 +15,8 @@ string userResponseOnUtility = "";
 string userResponseOnNftData = "";
 string nftData = "";
 NftBalance userNftToken;
+List<NftHoldersAndTotal> nftHoldersAndTotalList;
+NftHoldersAndTotal nftHoldersAndTotal;
 int nftTokenId;
 ILoopringService loopringService = new LoopringService();
 List<string> invalidAddress = new List<string>();
@@ -43,13 +45,14 @@ Font.SetTextToBlue("If you have any questions start at, https://cobmin.io/posts/
 Console.WriteLine("Before you airdrop, be sure to setup your appsetting.json and walletAddresses.txt.");
 Console.WriteLine("Find information on the two files in the README at https://github.com/cobmin/LoopringBatchNftTransferDemoSharp/blob/master/README.md");
 Console.WriteLine("After the two are setup, answer the following questions to Airdrop your Nfts.");
-Font.SetTextToBlue("Ready to move on?");
+Font.SetTextToBlue("Ready to start?");
 userResponseReadyToMoveOn = Utils.CheckYes(userResponseReadyToMoveOn);
 
 // Menu of the Utilities. need to be sure to change numbers here and in the CheckUtilityNumber
 Font.SetTextToBlue("This airdrop tool can currently do the following:");
 Console.WriteLine("\t 1. Airdrop the same NFT to any users.");
 Console.WriteLine("\t 2. Airdrop unique NFTs to any users.\r");
+Console.WriteLine("\t 3. Find Nft Holders from Nft Data.\r");
 Font.SetTextToBlue("Which would you like to do?");
 userResponseOnUtility = Utils.CheckUtilityNumber(userResponseOnUtility);
 
@@ -494,7 +497,42 @@ switch (userResponseOnUtility)
             }
         }
         break;
-        #endregion case 2
+    #endregion case 2
+    #region case 3
+    case "3":
+        string userResponseOnFileSetup = "";
+        string userResponseReadyOrNot = "";
+        Font.SetTextToBlue("Find Nft Holders from Nft Data.");
+        Console.WriteLine("Here you will get all the wallet addresses that hold the given Nft Data.");
+        Console.WriteLine("Let's get started.");
+        Font.SetTextToBlue("Did you setup your nftData.txt?");
+        userResponseOnFileSetup = Utils.CheckYes(userResponseOnFileSetup.ToLower());
+        Font.SetTextToBlue("Then type yes to start.");
+        userResponseReadyOrNot = Utils.CheckYes(userResponseReadyOrNot.ToLower());
+
+        using (StreamReader sr = new StreamReader(".\\..\\..\\..\\nftData.txt"))
+        {
+            while ((nftData = sr.ReadLine()) != null)
+            {
+                nftHoldersAndTotalList = await loopringService.GetNftHolders(settings.LoopringApiKey, nftData);  //the nft tokenId, not the 
+                foreach (var nftHoldersAndTotalSingle in nftHoldersAndTotalList)
+                {
+                    if (nftHoldersAndTotalSingle == nftHoldersAndTotalList.FirstOrDefault())
+                    {
+                        Font.SetTextToBlue($"NftData {nftData} has {nftHoldersAndTotalSingle.totalNum} total holders.");
+                        Font.SetTextToBlue($"Wallet Address \t\t\t\t\t\t Total");
+                    };
+                    foreach (var item in nftHoldersAndTotalSingle.nftHolders)
+                    {
+                        var userAccountInformation = await loopringService.GetUserAccountInformation(item.accountId.ToString());  //the nft tokenId, not the 
+                        Console.WriteLine($"{userAccountInformation.owner}\t\t {item.amount}");
+                    }
+                }
+            }
+        }
+
+                break;
+        #endregion case 3
 
 
 }
