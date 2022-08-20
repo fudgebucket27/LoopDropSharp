@@ -23,7 +23,11 @@ You will need to change the "appsettings.json" file in the project directory wit
   }
 }
 ```
+Wallet Address setup for: Airdrop the same NFT to any users
 In the walletAddresses.txt located in the project directory add your wallet address. You will have one wallet address on one line. Each wallet address will be one transfer. You can add a long wallet address or the ENS. Be sure to have enough LRC for each transfer.
+
+Wallet Address setup for: Airdrop unique NFTs to any users
+In the walletAddresses.txt located in the project directory add your wallet address a comma and then the nft data. You will have one wallet address, nft data on each line. Each walletaddress, nftdata will be one transfer. You can add a long wallet address or the ENS. Be sure to have enough LRC for each transfer.
 
 After setting up the appsettings.json and walletAddresses.txt, execute the solution. You will need to give it the nftData (not the nftId) of the NFT you want to transfer and the amount you want to transfer to each wallet. 
 
