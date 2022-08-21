@@ -524,7 +524,7 @@ while (userResponseReadyToMoveOn == "yes")
             Font.SetTextToBlue("Find Nft Holders from Nft Data.");
             Console.WriteLine("Here you will get all the wallet addresses that hold the given Nft Data.");
             Console.WriteLine("Let's get started.");
-            Font.SetTextToBlue("Is this for one or more Nft?");
+            Font.SetTextToBlue("Is this for one or many Nft?");
             userResponseOnMany = Utils.CheckOneOrMany(userResponseOnMany.ToLower());
             if (userResponseOnMany == "one")
             {
@@ -545,7 +545,7 @@ while (userResponseReadyToMoveOn == "yes")
                     }
                 }
             }
-            else if (userResponseOnMany == "two") 
+            else if (userResponseOnMany == "many") 
             { 
                 Font.SetTextToBlue("Did you setup your nftData.txt?");
                 userResponseOnFileSetup = Utils.CheckYes(userResponseOnFileSetup.ToLower());
