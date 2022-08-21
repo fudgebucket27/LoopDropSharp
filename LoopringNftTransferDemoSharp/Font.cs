@@ -39,6 +39,13 @@ namespace LoopringNftTransferDemoSharp
             return str;
         }
 
+        public static string SetTextToPurple(string str)
+        {
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine($"{str}", Console.ForegroundColor);
+            Console.ResetColor();
+            return str;
+        }
 
     }
 }

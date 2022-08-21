@@ -29,6 +29,17 @@ namespace LoopNftTransferDemoSharp
             return userResponse;
         }
 
+        public static string CheckOneOrMany(string userResponse)
+        {
+            userResponse = Console.ReadLine().ToLower();
+            while ((userResponse != "one") && (userResponse != "many"))
+            {
+                LoopringNftTransferDemoSharp.Font.SetTextToYellow("Please answer one or many.");
+                userResponse = Console.ReadLine().ToLower();
+            }
+            return userResponse;
+        }
+
         public static string CheckYes(string userResponse)
         {
             userResponse = Console.ReadLine().ToLower();
@@ -42,9 +53,9 @@ namespace LoopNftTransferDemoSharp
         public static string CheckUtilityNumber(string userResponse)
         {
             userResponse = Console.ReadLine();
-            while ((userResponse != "1") && (userResponse != "2") && (userResponse != "3"))
+            while ((userResponse != "1") && (userResponse != "2") && (userResponse != "3") && (userResponse != "4"))
             {
-                LoopringNftTransferDemoSharp.Font.SetTextToYellow("Please type a number between 1 and 3.");
+                LoopringNftTransferDemoSharp.Font.SetTextToYellow("Please type a number between 1 and 4.");
                 userResponse = Console.ReadLine();
             }
             return userResponse;

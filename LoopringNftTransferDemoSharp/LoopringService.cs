@@ -166,7 +166,7 @@ namespace LoopNftTransferDemoSharp
             }
         }
 
-        public async Task<List<NftHoldersAndTotal>> GetNftHolders(string apiKey, string nftData)
+        public async Task<List<NftHoldersAndTotal>> GetNftHoldersMultiple(string apiKey, string nftData)
         {
             var allData = new List<NftHoldersAndTotal>();
             var request = new RestRequest("/api/v3/nft/info/nftHolders");
