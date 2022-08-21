@@ -9,6 +9,8 @@ This was written in .NET 6 so you need an IDE that can compile it.
 
 You will need to change the "appsettings.json" file in the project directory with the necessary information.
 
+Here is a video going over the setup: https://youtu.be/Bkl6BwfA6jE
+
 ```json
 {
   "Settings": {
