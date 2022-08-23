@@ -1,5 +1,5 @@
 # LoopringBatchNftTransferDemoSharp
-This is Fudgey's demo repo modified to Batch transfer a specific NFT to multiple accounts on Loopring in C#.
+This is Fudgey's demo repo modified to Batch transfer Nfts and much more. 
 
 It uses a ***Metamask/GameStop*** private key to sign the transfers so you will need to export that out from your Metamask/GameStop account. You can export the Loopring related account details from the "Security" tab while logged into https://loopring.io. Make sure these details are from the same account.
 
@@ -8,6 +8,8 @@ DO NOT SHARE ANY API OR PRIVATE KEYS with anyone else!!!!!!!
 This was written in .NET 6 so you need an IDE that can compile it. 
 
 You will need to change the "appsettings.json" file in the project directory with the necessary information.
+
+Here is a video going over the setup: https://youtu.be/Bkl6BwfA6jE
 
 ```json
 {
@@ -23,15 +25,18 @@ You will need to change the "appsettings.json" file in the project directory wit
   }
 }
 ```
-Wallet Address setup for: Airdrop the same NFT to any users
+Wallet Address setup for: 1. Airdrop the same NFT to any users.
 In the walletAddresses.txt located in the project directory add your wallet address. You will have one wallet address on one line. Each wallet address will be one transfer. You can add a long wallet address or the ENS. Be sure to have enough LRC for each transfer.
 
-Wallet Address setup for: Airdrop unique NFTs to any users
+Wallet Address setup for: 2. Airdrop unique NFTs to any users
 In the walletAddresses.txt located in the project directory add your wallet address a comma and then the nft data. You will have one wallet address, nft data on each line. Each walletaddress, nftdata will be one transfer. You can add a long wallet address or the ENS. Be sure to have enough LRC for each transfer.
 
-After setting up the appsettings.json and walletAddresses.txt, execute the solution. You will need to give it the nftData (not the nftId) of the NFT you want to transfer and the amount you want to transfer to each wallet. 
+Nft Data setup for: 4. Find Nft Holders from Nft Data.
+In the nftData.txt located in the project directory add your Nft Data. You will have one Nft Data on one line.
 
-A successful NFT transfer will return the following JSON response:
+After setting up the appsettings.json and your files, execute the solution and follow the prompts. 
+
+When transfering, a successful Nft transfer will return the following JSON response:
 
 ```json
 {
