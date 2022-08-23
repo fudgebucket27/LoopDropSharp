@@ -15,9 +15,10 @@ string userResponseOnUtility = "";
 string userResponseOnNftData = "";
 string nftData = "";
 string userResponseOnMany = "";
+int userResponseOnAccountId = 0;
+List<MintsAndTotal> userMintsAndTotalList;
 NftBalance userNftToken;
 List<NftHoldersAndTotal> nftHoldersAndTotalList;
-NftHoldersAndTotal nftHoldersAndTotal;
 int nftTokenId;
 ILoopringService loopringService = new LoopringService();
 List<string> invalidAddress = new List<string>();
@@ -53,9 +54,10 @@ while (userResponseReadyToMoveOn == "yes")
     // Menu of the Utilities. need to be sure to change numbers here and in the CheckUtilityNumber
     Font.SetTextToBlue("This airdrop application can currently perform the following:");
     Console.WriteLine("\t 1. Airdrop the same NFT to any users.");
-    Console.WriteLine("\t 2. Airdrop unique NFTs to any users.\r");
-    Console.WriteLine("\t 3. Find Nft Data.\r");
-    Console.WriteLine("\t 4. Find Nft Holders from Nft Data.\r");
+    Console.WriteLine("\t 2. Airdrop unique NFTs to any users.");
+    Console.WriteLine("\t 3. Find Nft Data.");
+    Console.WriteLine("\t 4. Find Nft Holders from Nft Data.");
+    Console.WriteLine("\t 5. Find an accounts Nft wallet holders.");
     Font.SetTextToBlue("Which would you like to do?");
     userResponseOnUtility = Utils.CheckUtilityNumber(userResponseOnUtility);
     switch (userResponseOnUtility)
@@ -520,7 +522,6 @@ while (userResponseReadyToMoveOn == "yes")
         #region case 4
         case "4":
             string userResponseOnFileSetup = "";
-            string userResponseReadyOrNot = "";
             Font.SetTextToBlue("Find Nft Holders from Nft Data.");
             Console.WriteLine("Here you will get all the wallet addresses that hold the given Nft Data.");
             Console.WriteLine("Let's get started.");
@@ -572,7 +573,35 @@ while (userResponseReadyToMoveOn == "yes")
                 }
             }
             break;
-            #endregion case 4
+        #endregion case 4
+        #region case 5
+        case "5":
+            userResponseOnFileSetup = "";
+            Font.SetTextToBlue("Find an account's Nft wallet holders.");
+            Console.WriteLine("Here you will get all the wallet addresses that hold an account's Nfts.");
+            Console.WriteLine("Let's get started.");
+            Font.SetTextToBlue("What is the user account Id?");
+            userResponseOnAccountId = int.Parse(Console.ReadLine());
+            userMintsAndTotalList = await loopringService.GetUserMintedNfts(settings.LoopringApiKey, userResponseOnAccountId);  //the nft tokenId, not the 
+            Font.SetTextToGreen($"{userResponseOnAccountId} has {userMintsAndTotalList.First().totalNum} mints");
+            foreach (var userMintsAndTotalSingle in userMintsAndTotalList)
+            {
+                var mints = userMintsAndTotalSingle.mints;
+                foreach (var mint in mints)
+                {
+                    nftData = mint.nftData;
+                    var nftHoldersAndTotal = await loopringService.GetNftHolders(settings.LoopringApiKey, nftData);
+                        Font.SetTextToBlue($"NftData {nftData} has {nftHoldersAndTotal.totalNum} total holders.");
+                        Font.SetTextToGreen($"Wallet Address \t\t\t\t\t\t Total");
+                    foreach (var item in nftHoldersAndTotal.nftHolders)
+                    {
+                        var userAccountInformation = await loopringService.GetUserAccountInformation(item.accountId.ToString());  //the nft tokenId, not the 
+                        Console.WriteLine($"{userAccountInformation.owner}\t\t {item.amount}");
+                    }
+                }
+            }
+            break;
+        #endregion case 5
 
 
     }

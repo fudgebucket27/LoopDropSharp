@@ -197,6 +197,25 @@ namespace LoopNftTransferDemoSharp
                 return null;
             }
         }
+        public async Task<NftHoldersAndTotal> GetNftHolders(string apiKey, string nftData)
+        {
+            var request = new RestRequest("/api/v3/nft/info/nftHolders");
+            request.AddHeader("X-API-KEY", apiKey);
+            request.AddParameter("nftData", nftData);
+            request.AddParameter("limit", 100);
+            try
+            {
+                var offset = 100;
+                var response = await _client.GetAsync(request);
+                var data = JsonConvert.DeserializeObject<NftHoldersAndTotal>(response.Content!);
+                return data;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                return null;
+            }
+        }
 
         public async Task<AccountInformation> GetUserAccountInformation(string accountId)
         {
@@ -206,8 +225,43 @@ namespace LoopNftTransferDemoSharp
             {
                 var response = await _client.GetAsync(request);
                 var data = JsonConvert.DeserializeObject<AccountInformation>(response.Content!);
-                Thread.Sleep(1);
+                Thread.Sleep(10);
                 return data;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                return null;
+            }
+        }
+
+        public async Task<List<MintsAndTotal>> GetUserMintedNfts(string apiKey, int accountId)
+        {
+            var allDataMintsAndTotal = new List<MintsAndTotal>();
+            var request = new RestRequest("/api/v3/user/nft/mints");
+            request.AddHeader("X-API-KEY", apiKey);
+            request.AddParameter("accountId", accountId);
+            request.AddParameter("limit", 50);
+            try
+            {
+                var response = await _client.GetAsync(request);
+                var data = JsonConvert.DeserializeObject<MintsAndTotal>(response.Content!);
+                var total = data.totalNum;
+                allDataMintsAndTotal.Add(data);
+                while (total > 50)
+                {
+                    var lastDataMintsAndTotal = data.mints.LastOrDefault();
+                    if (lastDataMintsAndTotal is not null)
+                    {
+                        total = total - 50;
+                        var createdAt = lastDataMintsAndTotal.createdAt;
+                        request.AddOrUpdateParameter("createdAt", createdAt);
+                        response = await _client.GetAsync(request);
+                        var moreData = JsonConvert.DeserializeObject<MintsAndTotal>(response.Content!);
+                        allDataMintsAndTotal.Add(moreData);
+                    }
+                }
+                return allDataMintsAndTotal;
             }
             catch (HttpRequestException httpException)
             {
