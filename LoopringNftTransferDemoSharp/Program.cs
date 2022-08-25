@@ -72,6 +72,7 @@ while (userResponseReadyToMoveOn == "yes")
             if (userResponseOnNftData == "yes")
             {
                 Font.SetTextToBlue("Enter the NftData");
+                nftData = Console.ReadLine();
                 try
                 {
                     userNftToken = await loopringService.GetTokenId(settings.LoopringApiKey, settings.LoopringAccountId, nftData);  //the nft tokenId, not the nftId
