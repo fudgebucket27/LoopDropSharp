@@ -2,7 +2,7 @@
 
 https://cobmin.io/posts/Airdrop-Nfts-on-Loopring
 
-##Setup
+## Setup
 
 Here is a video going over the setup: https://youtu.be/Bkl6BwfA6jE
 
