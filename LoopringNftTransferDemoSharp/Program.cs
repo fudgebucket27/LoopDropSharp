@@ -507,7 +507,7 @@ while (userResponseReadyToMoveOn == "yes")
         case "3":
             Font.SetTextToBlue("Find Nft Data.");
             Console.WriteLine("Here you will get all the Nft Data from an Nft.");
-            Font.SetTextToBlue("Find your Nft on lexplorer.io or explorer.loopring.io.");
+            Console.WriteLine("Find your Nft on lexplorer.io or explorer.loopring.io.");
             Console.WriteLine("You should see the Nft Id, Minter, and Token Address");
             Font.SetTextToBlue("Enter in the Nft Id");
             string nftIdForNftData = Console.ReadLine(); //the amount of the nft to transfer
@@ -526,7 +526,7 @@ while (userResponseReadyToMoveOn == "yes")
             Font.SetTextToBlue("Find Nft Holders from Nft Data.");
             Console.WriteLine("Here you will get all the wallet addresses that hold the given Nft Data.");
             Console.WriteLine("Let's get started.");
-            Font.SetTextToBlue("Is this for one or many Nft?");
+            Font.SetTextToBlue("Is this for one or many Nfts?");
             userResponseOnMany = Utils.CheckOneOrMany(userResponseOnMany.ToLower());
             if (userResponseOnMany == "one")
             {
