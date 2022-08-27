@@ -250,16 +250,12 @@ namespace LoopNftTransferDemoSharp
                 allDataMintsAndTotal.Add(data);
                 while (total > 50)
                 {
-                    var lastDataMintsAndTotal = data.mints.LastOrDefault();
-                    if (lastDataMintsAndTotal is not null)
-                    {
-                        total = total - 50;
-                        var createdAt = lastDataMintsAndTotal.createdAt;
-                        request.AddOrUpdateParameter("createdAt", createdAt);
-                        response = await _client.GetAsync(request);
-                        var moreData = JsonConvert.DeserializeObject<MintsAndTotal>(response.Content!);
-                        allDataMintsAndTotal.Add(moreData);
-                    }
+                    total = total - 50;
+                    var createdAt = allDataMintsAndTotal.LastOrDefault().mints.LastOrDefault().createdAt;
+                    request.AddOrUpdateParameter("end", createdAt);
+                    response = await _client.GetAsync(request);
+                    var moreData = JsonConvert.DeserializeObject<MintsAndTotal>(response.Content!);
+                    allDataMintsAndTotal.Add(moreData);
                 }
                 return allDataMintsAndTotal;
             }

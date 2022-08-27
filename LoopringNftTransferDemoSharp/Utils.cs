@@ -53,9 +53,9 @@ namespace LoopNftTransferDemoSharp
         public static string CheckUtilityNumber(string userResponse)
         {
             userResponse = Console.ReadLine();
-            while ((userResponse != "1") && (userResponse != "2") && (userResponse != "3") && (userResponse != "4") && (userResponse != "5"))
+            while ((userResponse != "1") && (userResponse != "2") && (userResponse != "3") && (userResponse != "4") && (userResponse != "5") && (userResponse != "6"))
             {
-                LoopringNftTransferDemoSharp.Font.SetTextToYellow("Please type a number between 1 and 4.");
+                LoopringNftTransferDemoSharp.Font.SetTextToYellow("Please type a number between 1 and 6.");
                 userResponse = Console.ReadLine();
             }
             return userResponse;
