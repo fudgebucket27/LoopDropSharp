@@ -1,15 +1,18 @@
-# LoopringBatchNftTransferDemoSharp
-This is Fudgey's demo repo modified to Batch transfer Nfts and much more. 
+# AirDrop Application
 
-It uses a ***Metamask/GameStop*** private key to sign the transfers so you will need to export that out from your Metamask/GameStop account. You can export the Loopring related account details from the "Security" tab while logged into https://loopring.io. Make sure these details are from the same account.
+https://cobmin.io/posts/Airdrop-Nfts-on-Loopring
+
+## Setup
+
+Here is a video going over the setup: https://youtu.be/Bkl6BwfA6jE
+
+This application uses a ***Metamask/GameStop*** private key to sign the transfers so you will need to export that out from your Metamask/GameStop account. You can export the Loopring related account details from the "Security" tab while logged into https://loopring.io. Make sure these details are from the same account.
 
 DO NOT SHARE ANY API OR PRIVATE KEYS with anyone else!!!!!!!
 
 This was written in .NET 6 so you need an IDE that can compile it. 
 
 You will need to change the "appsettings.json" file in the project directory with the necessary information.
-
-Here is a video going over the setup: https://youtu.be/Bkl6BwfA6jE
 
 ```json
 {
@@ -25,16 +28,17 @@ Here is a video going over the setup: https://youtu.be/Bkl6BwfA6jE
   }
 }
 ```
+After setting up the appsettings.json, execute the solution and follow the prompts.
+
+## Text File setup
 Wallet Address setup for: 1. Airdrop the same NFT to any users.
-In the walletAddresses.txt located in the project directory add your wallet address. You will have one wallet address on one line. Each wallet address will be one transfer. You can add a long wallet address or the ENS. Be sure to have enough LRC for each transfer.
+In the walletAddresses.txt located in the project directory add your wallet addresses. You will have one wallet address on one line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS. 
 
 Wallet Address setup for: 2. Airdrop unique NFTs to any users
-In the walletAddresses.txt located in the project directory add your wallet address a comma and then the nft data. You will have one wallet address, nft data on each line. Each walletaddress, nftdata will be one transfer. You can add a long wallet address or the ENS. Be sure to have enough LRC for each transfer.
+In the walletAddresses.txt located in the project directory add your wallet address a comma and then the nft data (example: 0x4a71e0267207cec67c78df8857d81c508d43b00d,0x103cb20d3b310873f711d25758d57f18ba77a6b7842ae605d662e0ddd908ed5a). You will have one wallet address and nft data on each line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
 
 Nft Data setup for: 4. Find Nft Holders from Nft Data.
-In the nftData.txt located in the project directory add your Nft Data. You will have one Nft Data on one line.
-
-After setting up the appsettings.json and your files, execute the solution and follow the prompts. 
+In the nftData.txt located in the project directory add your Nft Data. You will have one Nft Data on one line. 
 
 When transfering, a successful Nft transfer will return the following JSON response:
 
@@ -50,7 +54,7 @@ When transfering, a successful Nft transfer will return the following JSON respo
 ```
 
 ## Credits
-I forked Fudgey's Repo and added a few lines of code. all credit goes to him.
+This is Fudgey's demo repo modified to Batch transfer Nfts and much more. I forked his Repo and added my own touch. credits to him.
 
 Fudgy thanked the below so I do as well: 
 
@@ -58,4 +62,4 @@ Thanks to ItsMonty.eth for the original NFT Transfer code in the [LooPyMinty](ht
 
 Also thanks to Taranasus for his [LoopringSharp](https://github.com/taranasus/LoopringSharp) repo for the ECDSA signing which I also used.
 
-I also used my own PoseidonSharp library for generating the Poseidon hashes and EDDSA signing.
+I also used my own (Fudgy's) PoseidonSharp library for generating the Poseidon hashes and EDDSA signing.
