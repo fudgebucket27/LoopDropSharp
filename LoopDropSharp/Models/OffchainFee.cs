@@ -1,4 +1,4 @@
-﻿namespace LoopNftTransferDemoSharp
+﻿namespace LoopDropSharp
 {
     public class Fee
     {

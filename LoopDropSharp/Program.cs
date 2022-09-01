@@ -1,4 +1,4 @@
-﻿using LoopNftTransferDemoSharp;
+﻿using LoopDropSharp;
 using Microsoft.Extensions.Configuration;
 using Nethereum.Signer;
 using Nethereum.Signer.EIP712;
@@ -6,9 +6,9 @@ using Nethereum.Util;
 using Newtonsoft.Json;
 using PoseidonSharp;
 using System.Numerics;
-using Type = LoopNftTransferDemoSharp.Type;
+using Type = LoopDropSharp.Type;
 using System.Collections.Generic;
-using LoopringNftTransferDemoSharp;
+using LoopDropSharp;
 
 string userResponseReadyToMoveOn = "";
 string userResponseOnUtility = "";

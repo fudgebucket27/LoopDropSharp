@@ -1,4 +1,4 @@
-﻿using LoopringNftTransferDemoSharp;
+﻿using LoopDropSharp;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LoopNftTransferDemoSharp
+namespace LoopDropSharp
 {
     public class LoopringService : ILoopringService, IDisposable
     {
