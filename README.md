@@ -54,7 +54,7 @@ When transfering, a successful Nft transfer will return the following JSON respo
 ```
 
 ## Credits
-This was a join effort between(most of the work was done my Cobmin) and myself
+The original boiler plate was originally made by myself, then Cobmin did some major modifications on a fork which I accepted into master.
 
 Also thanks to:
 
