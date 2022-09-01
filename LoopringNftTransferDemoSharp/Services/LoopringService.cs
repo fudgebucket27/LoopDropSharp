@@ -110,6 +110,55 @@ namespace LoopNftTransferDemoSharp
             }
         }
 
+        public async Task<string> SubmitTokenTransfer(
+          string apiKey,
+          string exchange,
+          int fromAccountId,
+          string fromAddress,
+               int toAccountId,
+               string toAddress,
+               int tokenId,
+               string tokenAmount,
+               int maxFeeTokenId,
+               string maxFeeAmount,
+               int storageId,
+               long validUntil,
+               string eddsaSignature,
+               string ecdsaSignature,
+               string memo
+          )
+        {
+            var request = new RestRequest("api/v3/transfer");
+            request.AddHeader("x-api-key", apiKey);
+            request.AddHeader("x-api-sig", ecdsaSignature);
+            request.AlwaysMultipartFormData = true;
+            request.AddParameter("exchange", exchange);
+            request.AddParameter("payerId", fromAccountId);
+            request.AddParameter("payerAddr", fromAddress);
+            request.AddParameter("payeeId", toAccountId);
+            request.AddParameter("payeeAddr", toAddress);
+            request.AddParameter("token.tokenId", tokenId);
+            request.AddParameter("token.volume", tokenAmount);
+            request.AddParameter("maxFee.tokenId", maxFeeTokenId);
+            request.AddParameter("maxFee.volume", maxFeeAmount);
+            request.AddParameter("storageId", storageId);
+            request.AddParameter("validUntil", validUntil);
+            request.AddParameter("eddsaSignature", eddsaSignature);
+            request.AddParameter("ecdsaSignature", ecdsaSignature);
+            request.AddParameter("memo", memo);
+            try
+            {
+                var response = await _client.ExecutePostAsync(request);
+                var data = response.Content;
+                return data;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Console.WriteLine($"Error submitting token transfer: {httpException.Message}");
+                return null;
+            }
+        }
+
         public async Task<EnsResult> GetHexAddress(string apiKey, string ens)
         {
             var request = new RestRequest("api/wallet/v3/resolveEns");
@@ -266,10 +315,33 @@ namespace LoopNftTransferDemoSharp
             }
         }
 
+        public async Task<TransferFeeOffchainFee> GetOffChainTransferFee(string apiKey, int accountId, int requestType, string feeToken, string amount)
+        {
+            var request = new RestRequest("api/v3/user/offchainFee");
+            request.AddHeader("x-api-key", apiKey);
+            request.AddParameter("accountId", accountId);
+            request.AddParameter("requestType", requestType);
+            request.AddParameter("tokenSymbol", feeToken);
+            request.AddParameter("amount", amount);
+            try
+            {
+                var response = await _client.GetAsync(request);
+                var data = JsonConvert.DeserializeObject<TransferFeeOffchainFee>(response.Content!);
+                return data;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Console.WriteLine($"Error getting transfer off chain fee: {httpException.Message}");
+                return null;
+            }
+        }
+
         public void Dispose()
         {
             _client?.Dispose();
             GC.SuppressFinalize(this);
         }
+
+
     }
 }

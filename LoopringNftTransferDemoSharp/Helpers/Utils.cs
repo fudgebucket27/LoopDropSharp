@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LoopringNftTransferDemoSharp;
+using PoseidonSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -53,12 +55,23 @@ namespace LoopNftTransferDemoSharp
         public static string CheckUtilityNumber(string userResponse)
         {
             userResponse = Console.ReadLine();
-            while ((userResponse != "1") && (userResponse != "2") && (userResponse != "3") && (userResponse != "4") && (userResponse != "5") && (userResponse != "6"))
+            while ((userResponse != "1") && (userResponse != "2") && (userResponse != "3") && (userResponse != "4") && (userResponse != "5") && (userResponse != "6") && (userResponse != "7"))
             {
-                LoopringNftTransferDemoSharp.Font.SetTextToYellow("Please type a number between 1 and 6.");
+                LoopringNftTransferDemoSharp.Font.SetTextToYellow("Please type a number between 1 and 7.");
                 userResponse = Console.ReadLine();
             }
             return userResponse;
         }
+
+        public static int GetUnixTimestamp() => (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+
+        public static string EDDSASign(BigInteger[] inputs, string loopringAddress)
+        {
+            var signer = new Eddsa(PoseidonHelper.GetPoseidonHash(inputs), loopringAddress);
+            return signer.Sign();
+        }
+
+
+
     }
 }
