@@ -1,13 +1,18 @@
-# LoopringNftTransferDemoSharp
-This is a demo repo to show how to do NFT transfers between accounts on Loopring in C#.
+# AirDrop Application
 
-It uses a ***Metamask/Gamestop wallet*** private key to sign the transfers so you will need to export that out from your Metamask/Gamestop wallet account. You can export the Loopring related account details from the "Security" tab while logged into https://loopring.io. Make sure these details are from the same account!
+https://cobmin.io/posts/Airdrop-Nfts-on-Loopring
+
+## Setup
+
+Here is a video going over the setup: https://youtu.be/Bkl6BwfA6jE
+
+This application uses a ***Metamask/GameStop*** private key to sign the transfers so you will need to export that out from your Metamask/GameStop account. You can export the Loopring related account details from the "Security" tab while logged into https://loopring.io. Make sure these details are from the same account.
 
 DO NOT SHARE ANY API OR PRIVATE KEYS with anyone else!!!!!!!
 
 This was written in .NET 6 so you need an IDE that can compile it. 
 
-You will need to setup an "appsettings.json" file in the project directory like below with the property "Copy to Output Directory" set to "Copy Always".
+You will need to change the "appsettings.json" file in the project directory with the necessary information.
 
 ```json
 {
@@ -23,17 +28,19 @@ You will need to setup an "appsettings.json" file in the project directory like 
   }
 }
 ```
+After setting up the appsettings.json, execute the solution and follow the prompts.
 
-Lines 12-15 in the Program.cs file are what need to be changed with the nftAmount, nftTokenId, nftData and toAddress.
+## Text File setup
+Wallet Address setup for: 1. Airdrop the same NFT to any users.
+In the walletAddresses.txt located in the project directory add your wallet addresses. You will have one wallet address on one line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS. 
 
-```csharp
-string nftAmount = "1"; //the amount of the nft to transfer
-int nftTokenId = 34008; //the nft tokenId, not the nftId
-string nftData = "0x18c28cdd97789a7a82603b9a4618dd711660e7231cd6e14087baa858de483e32"; //the nftData, not nftId
-string toAddress = "0x99fdddfdc9277404db0379009274cc98d3688f8b"; //the Address to send it to
-```
+Wallet Address setup for: 2. Airdrop unique NFTs to any users
+In the walletAddresses.txt located in the project directory add your wallet address a comma and then the nft data (example: 0x4a71e0267207cec67c78df8857d81c508d43b00d,0x103cb20d3b310873f711d25758d57f18ba77a6b7842ae605d662e0ddd908ed5a). You will have one wallet address and nft data on each line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
 
-A successful NFT transfer will return the following JSON response:
+Nft Data setup for: 4. Find Nft Holders from Nft Data.
+In the nftData.txt located in the project directory add your Nft Data. You will have one Nft Data on one line. 
+
+When transfering, a successful Nft transfer will return the following JSON response:
 
 ```json
 {
@@ -47,7 +54,11 @@ A successful NFT transfer will return the following JSON response:
 ```
 
 ## Credits
-Thanks to ItsMonty.eth for the original NFT Transfer code in the [LooPyMinty](https://github.com/Montspy/LooPyMinty) repo which I converted to C#.
+This was a join effort between(most of the work was done my Cobmin) and myself
+
+Also thanks to:
+
+TItsMonty.eth for the original NFT Transfer code in the [LooPyMinty](https://github.com/Montspy/LooPyMinty) repo which I converted to C#.
 
 Also thanks to Taranasus for his [LoopringSharp](https://github.com/taranasus/LoopringSharp) repo for the ECDSA signing which I also used.
 

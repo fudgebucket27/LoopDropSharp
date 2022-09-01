@@ -361,4 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/LoopringNftTransferDemoSharp/appsettings.json
+/LoopringNftTransferDemoSharp/MYappsettings.json
+/LoopringNftTransferDemoSharp/TemplatewalletAddresses.txt
+/LoopringNftTransferDemoSharp/Templateappsettings.json
+/LoopringNftTransferDemoSharp/walletAddresses - Copy.txt
