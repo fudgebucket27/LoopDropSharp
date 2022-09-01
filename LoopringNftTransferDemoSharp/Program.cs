@@ -45,7 +45,7 @@ int toAccountId = 0; //leave this as 0 DO NOT CHANGE
 Font.SetTextToBlue("Welcome to the Airdrop Application.");
 Font.SetTextToBlue("If you have any questions start at, https://cobmin.io/posts/Airdrop-Nfts-on-Loopring");
 Console.WriteLine("Before you airdrop, be sure to setup your appsetting.json and walletAddresses.txt.");
-Console.WriteLine("Find information on the two files in the README at https://github.com/cobmin/LoopringBatchNftTransferDemoSharp/blob/master/README.md");
+Console.WriteLine("Find information on the two files in the README at https://github.com/fudgebucket27/LoopDropSharp/blob/master/README.md");
 Console.WriteLine("After the two are setup, answer the following questions to Airdrop your Nfts.");
 Font.SetTextToBlue("Ready to start?");
 userResponseReadyToMoveOn = Utils.CheckYes(userResponseReadyToMoveOn);
