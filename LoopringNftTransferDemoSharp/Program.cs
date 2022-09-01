@@ -59,7 +59,7 @@ while (userResponseReadyToMoveOn == "yes")
     Console.WriteLine("\t 4. Find Nft Holders from Nft Data.");
     Console.WriteLine("\t 5. Find an accounts Nft wallet holders.");
     Console.WriteLine("\t 6. Find all Nft Data from a Collection.");
-    Console.WriteLine("\t 7. Transfer LRC/ETH to another address");
+    Console.WriteLine("\t 7. Airdrop LRC/ETH to any users.");
     Font.SetTextToBlue("Which would you like to do?");
     userResponseOnUtility = Utils.CheckUtilityNumber(userResponseOnUtility);
     switch (userResponseOnUtility)
@@ -651,19 +651,18 @@ while (userResponseReadyToMoveOn == "yes")
         #region case 7
         case "7":
             //Token id of 1 for LRC, token id of 0 for ETH
-            string transferToAddress = "";
             decimal amountToTransfer = 0m;
             string transferMemo = "";
             int transferTokenId;
             string transferTokenSymbol = "";
-            Font.SetTextToBlue("7. Transfer LRC/ETH to another address.");
-            Console.WriteLine("Here you will transfer LRC/ETH to another address");
+            Font.SetTextToBlue("7. Airdrop LRC/ETH to any users.");
+            Console.WriteLine("Here you will airdrop LRC/ETH to many users. Check the README for walletAddress.txt setup.");
             Console.WriteLine("Let's get started.");
+            Font.SetTextToBlue("Did you setup your walletAddress.txt?");
+            userResponseOnNftData = Utils.CheckYes(userResponseOnNftData.ToLower());
             Font.SetTextToBlue("Do you want to send LRC(1) or ETH(0)?");
             transferTokenId = int.Parse(Console.ReadLine()?.ToLower().Trim());
-            Font.SetTextToBlue("What is the user's address?");
-            transferToAddress = Console.ReadLine()?.ToLower().Trim();
-            Font.SetTextToBlue("Amount to transfer?");
+            Font.SetTextToBlue("Amount to transfer per address?");
             amountToTransfer = decimal.Parse(Console.ReadLine()?.ToLower().Trim());
             Font.SetTextToBlue("Memo for transfer?");
             transferMemo = Console.ReadLine()?.ToLower().Trim();
@@ -677,35 +676,44 @@ while (userResponseReadyToMoveOn == "yes")
                transferTokenSymbol = "ETH";
             }
 
-            var amount = (amountToTransfer * 1000000000000000000m).ToString("0");
-            var transferFeeAmountResult = await loopringService.GetOffChainTransferFee(loopringApiKey, fromAccountId, 3, transferTokenSymbol, amount); //3 is the request type for crypto transfers
-            var feeAmount = transferFeeAmountResult.fees.Where(w => w.token == transferTokenSymbol).First().fee;
-            var transferStorageId = await loopringService.GetNextStorageId(loopringApiKey, fromAccountId, transferTokenId);
-
-            TransferRequest req = new TransferRequest()
+            Font.SetTextToBlue("Starting airdrop...");
+            using (StreamReader sr = new StreamReader(".\\..\\..\\..\\walletAddresses.txt"))
             {
-                exchange = exchange,
-                maxFee = new Token()
-                {
-                    tokenId = transferTokenId,
-                    volume = feeAmount
-                },
-                token = new Token()
-                {
-                    tokenId = transferTokenId,
-                    volume = amount
-                },
-                payeeAddr = transferToAddress,
-                payerAddr = fromAddress,
-                payeeId = 0,
-                payerId = fromAccountId,
-                storageId = transferStorageId.offchainId,
-                validUntil = Utils.GetUnixTimestamp() + (int)TimeSpan.FromDays(365).TotalSeconds,
-                tokenName = transferTokenSymbol,
-                tokenFeeName = transferTokenSymbol
-            };
 
-            BigInteger[] eddsaSignatureinputs = {
+                string walletAddressLine;
+                while ((walletAddressLine = sr.ReadLine()) != null)
+                {
+                    var transferToAddress = walletAddressLine;
+
+                    var amount = (amountToTransfer * 1000000000000000000m).ToString("0");
+                    var transferFeeAmountResult = await loopringService.GetOffChainTransferFee(loopringApiKey, fromAccountId, 3, transferTokenSymbol, amount); //3 is the request type for crypto transfers
+                    var feeAmount = transferFeeAmountResult.fees.Where(w => w.token == transferTokenSymbol).First().fee;
+                    var transferStorageId = await loopringService.GetNextStorageId(loopringApiKey, fromAccountId, transferTokenId);
+
+                    TransferRequest req = new TransferRequest()
+                    {
+                        exchange = exchange,
+                        maxFee = new Token()
+                        {
+                            tokenId = transferTokenId,
+                            volume = feeAmount
+                        },
+                        token = new Token()
+                        {
+                            tokenId = transferTokenId,
+                            volume = amount
+                        },
+                        payeeAddr = transferToAddress,
+                        payerAddr = fromAddress,
+                        payeeId = 0,
+                        payerId = fromAccountId,
+                        storageId = transferStorageId.offchainId,
+                        validUntil = Utils.GetUnixTimestamp() + (int)TimeSpan.FromDays(365).TotalSeconds,
+                        tokenName = transferTokenSymbol,
+                        tokenFeeName = transferTokenSymbol
+                    };
+
+                    BigInteger[] eddsaSignatureinputs = {
                 Utils.ParseHexUnsigned(req.exchange),
                 (BigInteger)req.payerId,
                 (BigInteger)req.payeeId,
@@ -720,33 +728,33 @@ while (userResponseReadyToMoveOn == "yes")
                 (BigInteger)req.storageId
             };
 
-            Poseidon poseidonTransfer = new Poseidon(13, 6, 53, "poseidon", 5, _securityTarget: 128);
-            BigInteger poseidonTransferHash = poseidonTransfer.CalculatePoseidonHash(eddsaSignatureinputs);
-            Eddsa eddsaTransfer = new Eddsa(poseidonTransferHash, loopringPrivateKey);
-            string transferEddsaSignature = eddsaTransfer.Sign();
+                    Poseidon poseidonTransfer = new Poseidon(13, 6, 53, "poseidon", 5, _securityTarget: 128);
+                    BigInteger poseidonTransferHash = poseidonTransfer.CalculatePoseidonHash(eddsaSignatureinputs);
+                    Eddsa eddsaTransfer = new Eddsa(poseidonTransferHash, loopringPrivateKey);
+                    string transferEddsaSignature = eddsaTransfer.Sign();
 
-            //Calculate ecdsa
-            string primaryTypeNameTransfer = "Transfer";
-            TypedData eip712TypedDataTransfer = new TypedData();
-            eip712TypedDataTransfer.Domain = new Domain()
-            {
-                Name = "Loopring Protocol",
-                Version = "3.6.0",
-                ChainId = 1,
-                VerifyingContract = "0x0BABA1Ad5bE3a5C0a66E7ac838a129Bf948f1eA4",
-            };
-            eip712TypedDataTransfer.PrimaryType = primaryTypeNameTransfer;
-            eip712TypedDataTransfer.Types = new Dictionary<string, MemberDescription[]>()
-            {
-                ["EIP712Domain"] = new[]
+                    //Calculate ecdsa
+                    string primaryTypeNameTransfer = "Transfer";
+                    TypedData eip712TypedDataTransfer = new TypedData();
+                    eip712TypedDataTransfer.Domain = new Domain()
                     {
+                        Name = "Loopring Protocol",
+                        Version = "3.6.0",
+                        ChainId = 1,
+                        VerifyingContract = "0x0BABA1Ad5bE3a5C0a66E7ac838a129Bf948f1eA4",
+                    };
+                    eip712TypedDataTransfer.PrimaryType = primaryTypeNameTransfer;
+                    eip712TypedDataTransfer.Types = new Dictionary<string, MemberDescription[]>()
+                    {
+                        ["EIP712Domain"] = new[]
+                            {
                                             new MemberDescription {Name = "name", Type = "string"},
                                             new MemberDescription {Name = "version", Type = "string"},
                                             new MemberDescription {Name = "chainId", Type = "uint256"},
                                             new MemberDescription {Name = "verifyingContract", Type = "address"},
                                         },
-                [primaryTypeNameTransfer] = new[]
-                    {
+                        [primaryTypeNameTransfer] = new[]
+                            {
                                             new MemberDescription {Name = "from", Type = "address"},            // payerAddr
                                             new MemberDescription {Name = "to", Type = "address"},              // toAddr
                                             new MemberDescription {Name = "tokenID", Type = "uint16"},          // token.tokenId 
@@ -757,9 +765,9 @@ while (userResponseReadyToMoveOn == "yes")
                                             new MemberDescription {Name = "storageID", Type = "uint32"}         // storageId
                                         },
 
-            };
-            eip712TypedDataTransfer.Message = new[]
-            {
+                    };
+                    eip712TypedDataTransfer.Message = new[]
+                    {
                                     new MemberValue {TypeName = "address", Value = fromAddress},
                                     new MemberValue {TypeName = "address", Value = transferToAddress},
                                     new MemberValue {TypeName = "uint16", Value = req.token.tokenId},
@@ -770,37 +778,37 @@ while (userResponseReadyToMoveOn == "yes")
                                     new MemberValue {TypeName = "uint32", Value = req.storageId},
                                 };
 
-            TransferTypedData typedDataTransfer = new TransferTypedData()
-            {
-                domain = new TransferTypedData.Domain()
-                {
-                    name = "Loopring Protocol",
-                    version = "3.6.0",
-                    chainId = 1,
-                    verifyingContract = "0x0BABA1Ad5bE3a5C0a66E7ac838a129Bf948f1eA4",
-                },
-                message = new TransferTypedData.Message()
-                {
-                    from = fromAddress,
-                    to = transferToAddress,
-                    tokenID = req.token.tokenId,
-                    amount = req.token.volume,
-                    feeTokenID = req.maxFee.tokenId,
-                    maxFee = req.maxFee.volume,
-                    validUntil = (int)req.validUntil,
-                    storageID = req.storageId
-                },
-                primaryType = primaryTypeNameTransfer,
-                types = new TransferTypedData.Types()
-                {
-                    EIP712Domain = new List<Type>()
+                    TransferTypedData typedDataTransfer = new TransferTypedData()
+                    {
+                        domain = new TransferTypedData.Domain()
+                        {
+                            name = "Loopring Protocol",
+                            version = "3.6.0",
+                            chainId = 1,
+                            verifyingContract = "0x0BABA1Ad5bE3a5C0a66E7ac838a129Bf948f1eA4",
+                        },
+                        message = new TransferTypedData.Message()
+                        {
+                            from = fromAddress,
+                            to = transferToAddress,
+                            tokenID = req.token.tokenId,
+                            amount = req.token.volume,
+                            feeTokenID = req.maxFee.tokenId,
+                            maxFee = req.maxFee.volume,
+                            validUntil = (int)req.validUntil,
+                            storageID = req.storageId
+                        },
+                        primaryType = primaryTypeNameTransfer,
+                        types = new TransferTypedData.Types()
+                        {
+                            EIP712Domain = new List<Type>()
                                         {
                                             new Type(){ name = "name", type = "string"},
                                             new Type(){ name="version", type = "string"},
                                             new Type(){ name="chainId", type = "uint256"},
                                             new Type(){ name="verifyingContract", type = "address"},
                                         },
-                    Transfer = new List<Type>()
+                            Transfer = new List<Type>()
                                         {
                                             new Type(){ name = "from", type = "address"},
                                             new Type(){ name = "to", type = "address"},
@@ -811,35 +819,37 @@ while (userResponseReadyToMoveOn == "yes")
                                             new Type(){ name = "validUntil", type = "uint32"},
                                             new Type(){ name = "storageID", type = "uint32"},
                                         }
+                        }
+                    };
+
+                    Eip712TypedDataSigner signerTransfer = new Eip712TypedDataSigner();
+                    var ethECKeyTransfer = new Nethereum.Signer.EthECKey(metamaskPrivateKey.Replace("0x", ""));
+                    var encodedTypedDataTransfer = signerTransfer.EncodeTypedData(eip712TypedDataTransfer);
+                    var ECDRSASignatureTransfer = ethECKeyTransfer.SignAndCalculateV(Sha3Keccack.Current.CalculateHash(encodedTypedDataTransfer));
+                    var serializedECDRSASignatureTransfer = EthECDSASignature.CreateStringSignature(ECDRSASignatureTransfer);
+                    var transferEcdsaSignature = serializedECDRSASignatureTransfer + "0" + (int)2;
+
+                    var tokenTransferResult = await loopringService.SubmitTokenTransfer(
+                        loopringApiKey,
+                        exchange,
+                        fromAccountId,
+                        fromAddress,
+                        0,
+                        transferToAddress,
+                        req.token.tokenId,
+                        req.token.volume,
+                        req.maxFee.tokenId,
+                        req.maxFee.volume,
+                        req.storageId,
+                        req.validUntil,
+                        transferEddsaSignature,
+                        transferEcdsaSignature,
+                        transferMemo);
+                    Console.WriteLine(tokenTransferResult);
                 }
-            };
+                Font.SetTextToBlue("Airdrop finished...");
 
-            Eip712TypedDataSigner signerTransfer = new Eip712TypedDataSigner();
-            var ethECKeyTransfer = new Nethereum.Signer.EthECKey(metamaskPrivateKey.Replace("0x", ""));
-            var encodedTypedDataTransfer = signerTransfer.EncodeTypedData(eip712TypedDataTransfer);
-            var ECDRSASignatureTransfer = ethECKeyTransfer.SignAndCalculateV(Sha3Keccack.Current.CalculateHash(encodedTypedDataTransfer));
-            var serializedECDRSASignatureTransfer = EthECDSASignature.CreateStringSignature(ECDRSASignatureTransfer);
-            var transferEcdsaSignature = serializedECDRSASignatureTransfer + "0" + (int)2;
-
-            var tokenTransferResult = await loopringService.SubmitTokenTransfer(
-                loopringApiKey,
-                exchange,
-                fromAccountId,
-                fromAddress,
-                0,
-                transferToAddress,
-                req.token.tokenId,
-                req.token.volume,
-                req.maxFee.tokenId,
-                req.maxFee.volume,
-                req.storageId,
-                req.validUntil,
-                transferEddsaSignature,
-                transferEcdsaSignature,
-                transferMemo);
-
-            Console.WriteLine(tokenTransferResult);
-
+            }
             break;
             #endregion case 7
 
