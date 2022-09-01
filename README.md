@@ -1,5 +1,5 @@
 # LoopDropSharp
-This application can airdrop NFTs and other tokens on Layer 2.
+This application can airdrop NFTs and other tokens on Loopring Layer 2.
 
 https://cobmin.io/posts/Airdrop-Nfts-on-Loopring
 
