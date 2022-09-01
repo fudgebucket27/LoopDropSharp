@@ -59,7 +59,7 @@ while (userResponseReadyToMoveOn == "yes")
     Console.WriteLine("\t 4. Find Nft Holders from Nft Data.");
     Console.WriteLine("\t 5. Find an accounts Nft wallet holders.");
     Console.WriteLine("\t 6. Find all Nft Data from a Collection.");
-    Console.WriteLine("\t 7. Transfer LRC to another address");
+    Console.WriteLine("\t 7. Transfer LRC/ETH to another address");
     Font.SetTextToBlue("Which would you like to do?");
     userResponseOnUtility = Utils.CheckUtilityNumber(userResponseOnUtility);
     switch (userResponseOnUtility)
@@ -654,32 +654,45 @@ while (userResponseReadyToMoveOn == "yes")
             string transferToAddress = "";
             decimal amountToTransfer = 0m;
             string transferMemo = "";
-            Font.SetTextToBlue("7. Transfer LRC to another address.");
-            Console.WriteLine("Here you will transfer LRC to another address");
+            int transferTokenId;
+            string transferTokenSymbol = "";
+            Font.SetTextToBlue("7. Transfer LRC/ETH to another address.");
+            Console.WriteLine("Here you will transfer LRC/ETH to another address");
             Console.WriteLine("Let's get started.");
+            Font.SetTextToBlue("Do you want to send LRC(1) or ETH(0)?");
+            transferTokenId = int.Parse(Console.ReadLine()?.ToLower().Trim());
             Font.SetTextToBlue("What is the user's address?");
             transferToAddress = Console.ReadLine()?.ToLower().Trim();
-            Font.SetTextToBlue("Amount of LRC to transfer?");
+            Font.SetTextToBlue("Amount to transfer?");
             amountToTransfer = decimal.Parse(Console.ReadLine()?.ToLower().Trim());
             Font.SetTextToBlue("Memo for transfer?");
             transferMemo = Console.ReadLine()?.ToLower().Trim();
 
+            if(transferTokenId == 1)
+            {
+                transferTokenSymbol = "LRC";
+            }
+            else if(transferTokenId == 0)
+            {
+               transferTokenSymbol = "ETH";
+            }
+
             var amount = (amountToTransfer * 1000000000000000000m).ToString("0");
-            var transferFeeAmountResult = await loopringService.GetOffChainTransferFee(loopringApiKey, fromAccountId, 3, "LRC", amount); //3 is the request type for crypto transfers
-            var feeAmount = transferFeeAmountResult.fees.Where(w => w.token == "LRC").First().fee;
-            var transferStorageId = await loopringService.GetNextStorageId(loopringApiKey, fromAccountId, 1);
+            var transferFeeAmountResult = await loopringService.GetOffChainTransferFee(loopringApiKey, fromAccountId, 3, transferTokenSymbol, amount); //3 is the request type for crypto transfers
+            var feeAmount = transferFeeAmountResult.fees.Where(w => w.token == transferTokenSymbol).First().fee;
+            var transferStorageId = await loopringService.GetNextStorageId(loopringApiKey, fromAccountId, transferTokenId);
 
             TransferRequest req = new TransferRequest()
             {
                 exchange = exchange,
                 maxFee = new Token()
                 {
-                    tokenId = 1,
+                    tokenId = transferTokenId,
                     volume = feeAmount
                 },
                 token = new Token()
                 {
-                    tokenId = 1,
+                    tokenId = transferTokenId,
                     volume = amount
                 },
                 payeeAddr = transferToAddress,
@@ -688,8 +701,8 @@ while (userResponseReadyToMoveOn == "yes")
                 payerId = fromAccountId,
                 storageId = transferStorageId.offchainId,
                 validUntil = Utils.GetUnixTimestamp() + (int)TimeSpan.FromDays(365).TotalSeconds,
-                tokenName = "LRC",
-                tokenFeeName = "LRC"
+                tokenName = transferTokenSymbol,
+                tokenFeeName = transferTokenSymbol
             };
 
             BigInteger[] eddsaSignatureinputs = {
