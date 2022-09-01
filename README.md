@@ -54,12 +54,12 @@ When transfering, a successful Nft transfer will return the following JSON respo
 ```
 
 ## Credits
-This is Fudgey's demo repo modified to Batch transfer Nfts and much more. I forked his Repo and added my own touch. credits to him.
+This was a join effort between(most of the work was done my Cobmin) and myself
 
-Fudgy thanked the below so I do as well: 
+Also thanks to:
 
-Thanks to ItsMonty.eth for the original NFT Transfer code in the [LooPyMinty](https://github.com/Montspy/LooPyMinty) repo which I converted to C#.
+TItsMonty.eth for the original NFT Transfer code in the [LooPyMinty](https://github.com/Montspy/LooPyMinty) repo which I converted to C#.
 
 Also thanks to Taranasus for his [LoopringSharp](https://github.com/taranasus/LoopringSharp) repo for the ECDSA signing which I also used.
 
-I also used my own (Fudgy's) PoseidonSharp library for generating the Poseidon hashes and EDDSA signing.
+I also used my own PoseidonSharp library for generating the Poseidon hashes and EDDSA signing.
