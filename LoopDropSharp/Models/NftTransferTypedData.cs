@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LoopNftTransferDemoSharp
+namespace LoopDropSharp
 {
     public class TransferTypedData
     {

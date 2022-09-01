@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopringNftTransferDemoSharp", "LoopringNftTransferDemoSharp\LoopringNftTransferDemoSharp.csproj", "{B6DCE104-B63B-4552-957A-C173184F8E41}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopDropSharp", "LoopDropSharp\LoopDropSharp.csproj", "{B6DCE104-B63B-4552-957A-C173184F8E41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-﻿using LoopringNftTransferDemoSharp;
+﻿using LoopDropSharp;
 using PoseidonSharp;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LoopNftTransferDemoSharp
+namespace LoopDropSharp
 {
     public static class Utils
     {
@@ -25,7 +25,7 @@ namespace LoopNftTransferDemoSharp
             userResponse = Console.ReadLine().ToLower();
             while ((userResponse != "yes") && (userResponse != "no"))
             {
-                LoopringNftTransferDemoSharp.Font.SetTextToYellow("Please answer yes or no.");
+                LoopDropSharp.Font.SetTextToYellow("Please answer yes or no.");
                 userResponse = Console.ReadLine().ToLower();
             }
             return userResponse;
@@ -36,7 +36,7 @@ namespace LoopNftTransferDemoSharp
             userResponse = Console.ReadLine().ToLower();
             while ((userResponse != "one") && (userResponse != "many"))
             {
-                LoopringNftTransferDemoSharp.Font.SetTextToYellow("Please answer one or many.");
+                LoopDropSharp.Font.SetTextToYellow("Please answer one or many.");
                 userResponse = Console.ReadLine().ToLower();
             }
             return userResponse;
@@ -47,7 +47,7 @@ namespace LoopNftTransferDemoSharp
             userResponse = Console.ReadLine().ToLower();
             while (userResponse != "yes")
             {
-                LoopringNftTransferDemoSharp.Font.SetTextToYellow("Please answer yes when you are ready.");
+                LoopDropSharp.Font.SetTextToYellow("Please answer yes when you are ready.");
                 userResponse = Console.ReadLine().ToLower();
             }
             return userResponse;
@@ -57,7 +57,7 @@ namespace LoopNftTransferDemoSharp
             userResponse = Console.ReadLine();
             while ((userResponse != "1") && (userResponse != "2") && (userResponse != "3") && (userResponse != "4") && (userResponse != "5") && (userResponse != "6") && (userResponse != "7"))
             {
-                LoopringNftTransferDemoSharp.Font.SetTextToYellow("Please type a number between 1 and 7.");
+                LoopDropSharp.Font.SetTextToYellow("Please type a number between 1 and 7.");
                 userResponse = Console.ReadLine();
             }
             return userResponse;
