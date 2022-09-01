@@ -55,7 +55,7 @@ When transfering, a successful Nft transfer will return the following JSON respo
 ```
 
 ## Credits
-The original boiler plate was originally made by myself, then Cobmin did some major modifications on a fork which I accepted into master.
+The original boiler plate was originally made by myself, then Cobmin did some major modifications on a fork which I accepted into master. Cobmin was then added as a collaborator, and the project was reborn as LoopDropSharp
 
 Also thanks to:
 
