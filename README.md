@@ -41,6 +41,9 @@ In the walletAddresses.txt located in the project directory add your wallet addr
 Nft Data setup for: 4. Find Nft Holders from Nft Data.
 In the nftData.txt located in the project directory add your Nft Data. You will have one Nft Data on one line. 
 
+Wallet Address setup for: 7. Airdrop LRC/ETH to any users.
+In the walletAddresses.txt located in the project directory add your wallet addresses. You will have one wallet address on one line. Each wallet address will be one transfer of LRC/ETH. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS. 
+
 When transfering, a successful Nft transfer will return the following JSON response:
 
 ```json
