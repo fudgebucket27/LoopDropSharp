@@ -65,12 +65,6 @@ namespace LoopNftTransferDemoSharp
 
         public static int GetUnixTimestamp() => (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
 
-        public static string EDDSASign(BigInteger[] inputs, string loopringAddress)
-        {
-            var signer = new Eddsa(PoseidonHelper.GetPoseidonHash(inputs), loopringAddress);
-            return signer.Sign();
-        }
-
 
 
     }
