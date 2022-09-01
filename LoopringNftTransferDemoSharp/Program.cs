@@ -685,6 +685,22 @@ while (userResponseReadyToMoveOn == "yes")
                 {
                     var transferToAddress = walletAddressLine;
 
+                    //check for ens and convert to long wallet address if so
+                    if (transferToAddress.Contains(".eth"))
+                    {
+                        var varHexAddress = await loopringService.GetHexAddress(settings.LoopringApiKey, transferToAddress);
+                        if (!String.IsNullOrEmpty(varHexAddress.data))
+                        {
+                            transferToAddress = varHexAddress.data;
+                        }
+                        else
+                        {
+                            invalidAddress.Add(transferToAddress);
+                            Thread.Sleep(1); //for a rate limiter just incase multiple invalid ens
+                            continue;
+                        }
+                    }
+
                     var amount = (amountToTransfer * 1000000000000000000m).ToString("0");
                     var transferFeeAmountResult = await loopringService.GetOffChainTransferFee(loopringApiKey, fromAccountId, 3, transferTokenSymbol, amount); //3 is the request type for crypto transfers
                     var feeAmount = transferFeeAmountResult.fees.Where(w => w.token == transferTokenSymbol).First().fee;
@@ -846,9 +862,25 @@ while (userResponseReadyToMoveOn == "yes")
                         transferEcdsaSignature,
                         transferMemo);
                     Console.WriteLine(tokenTransferResult);
+                    validAddress.Add(transferToAddress);
                 }
                 Font.SetTextToBlue("Airdrop finished...");
-
+                if(validAddress.Count > 0)
+                {
+                    Font.SetTextToGreen($"The following were valid addresses that did receive {transferTokenSymbol}");
+                    foreach (var address in validAddress)
+                    {
+                        Console.WriteLine(address);
+                    }
+                }
+                if(invalidAddress.Count > 0)
+                {
+                    Font.SetTextToRed($"The following were invalid addresses that did not receive {transferTokenSymbol}");
+                    foreach (var address in invalidAddress)
+                    {
+                        Console.WriteLine(address);
+                    }
+                }
             }
             break;
             #endregion case 7
