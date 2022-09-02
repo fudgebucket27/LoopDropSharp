@@ -1,4 +1,5 @@
 ﻿using LoopDropSharp;
+using Nethereum.Signer.EIP712;
 using PoseidonSharp;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,26 @@ namespace LoopDropSharp
                 LoopDropSharp.Font.SetTextToYellow("Please type a number between 1 and 7.");
                 userResponse = Console.ReadLine();
             }
+            return userResponse;
+        }
+        public static int Check1Or2(int userResponse)
+        {
+            bool validOrNot = false;
+            var counter = 0;
+            do
+            {
+                if (counter == 0)
+                {
+                    validOrNot = int.TryParse(Console.ReadLine()?.ToLower().Trim(), out userResponse);
+                    counter++;
+                }
+                else
+                {
+                    LoopDropSharp.Font.SetTextToYellow("Please answer 1 or 2.");
+                    validOrNot = int.TryParse(Console.ReadLine()?.ToLower().Trim(), out userResponse);
+                }
+            } while (((userResponse != 1) && (userResponse != 2)) || validOrNot == false);
+
             return userResponse;
         }
 

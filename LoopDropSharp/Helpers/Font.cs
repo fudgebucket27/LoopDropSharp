@@ -15,6 +15,14 @@ namespace LoopDropSharp
             return str;
         }
 
+        public static string SetTextToDarkBlue(string str)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine($"{str}", Console.ForegroundColor);
+            Console.ResetColor();
+            return str;
+        }
+
         public static string SetTextToYellow(string str)
         {  
             Console.ForegroundColor = ConsoleColor.Yellow;
