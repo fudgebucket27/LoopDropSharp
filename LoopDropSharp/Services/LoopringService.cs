@@ -179,14 +179,26 @@ namespace LoopDropSharp
 
         public async Task<NftBalance> GetTokenId(string apiKey, int accountId, string nftData)
         {
+            var data = new NftBalance();
+            var counter = 0;
             var request = new RestRequest("/api/v3/user/nft/balances");
             request.AddHeader("x-api-key", apiKey);
             request.AddParameter("accountId", accountId);
             request.AddParameter("nftDatas", nftData);
             try
             {
-                var response = await _client.GetAsync(request);
-                var data = JsonConvert.DeserializeObject<NftBalance>(response.Content!);
+                do
+                {
+                    if (counter != 0)
+                    {
+                        Font.SetTextToYellow("This is not an NftData. Please enter in a correct one.");
+                        nftData = Console.ReadLine();
+                        request.AddOrUpdateParameter("nftDatas", nftData);
+                    }
+                    var response = await _client.GetAsync(request);
+                    data = JsonConvert.DeserializeObject<NftBalance>(response.Content!);
+                    counter++;
+                } while (data.data.Count == 0);
                 return data;
             }
             catch (HttpRequestException httpException)
@@ -198,14 +210,33 @@ namespace LoopDropSharp
 
         public async Task<NftData> GetNftData(string nftId, string minter, string tokenAddress)
         {
+            var data = new NftData();
+            var counter = 0;
             var request = new RestRequest("/api/v3/nft/info/nftData");
             request.AddParameter("nftId", nftId);
             request.AddParameter("minter", minter);
             request.AddParameter("tokenAddress", tokenAddress);
             try
             {
-                var response = await _client.GetAsync(request);
-                var data = JsonConvert.DeserializeObject<NftData>(response.Content!);
+                do
+                {
+                    if (counter != 0)
+                    {
+                        Font.SetTextToYellow("The above information did not find Nft Data. Please try again.");
+                        Font.SetTextToBlue("Enter in the Nft Id");
+                        nftId = Utils.ReadLineWarningNoNulls("Enter in the Nft Id");
+                        Font.SetTextToBlue("Enter in the Minter");
+                        minter = Utils.ReadLineWarningNoNulls("Enter in the Minter");
+                        Font.SetTextToBlue("Enter in the Token/Collection Address");
+                        tokenAddress = Utils.ReadLineWarningNoNulls("Enter in the Token/Collection Address");
+                        request.AddOrUpdateParameter("nftId", nftId);
+                        request.AddOrUpdateParameter("minter", minter);
+                        request.AddOrUpdateParameter("tokenAddress", tokenAddress);
+                    }
+                    var response = await _client.GetAsync(request);
+                    data = JsonConvert.DeserializeObject<NftData>(response.Content!);
+                    counter++;
+                } while (data == null);
                 return data;
             }
             catch (HttpRequestException httpException)

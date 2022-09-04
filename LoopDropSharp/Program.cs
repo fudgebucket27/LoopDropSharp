@@ -7,15 +7,16 @@ using Newtonsoft.Json;
 using PoseidonSharp;
 using System.Numerics;
 using Type = LoopDropSharp.Type;
-using System.Collections.Generic;
-using LoopDropSharp;
 
 string userResponseReadyToMoveOn = "";
 string userResponseOnUtility = "";
 string userResponseOnNftData = "";
 string nftData = "";
+string nftAmount;
 string userResponseOnMany = "";
 string userResponseOnWalletAddressDisplay = "";
+string userResponseOnWalletSetup = "";
+string tokenAddress = "";
 int userResponseOnAccountId = 0;
 List<MintsAndTotal> userMintsAndTotalList;
 NftBalance userNftToken;
@@ -38,7 +39,7 @@ var metamaskPrivateKey = settings.MetamaskPrivateKey; //metamask private key KEE
 var fromAddress = settings.LoopringAddress; //your loopring address
 var fromAccountId = settings.LoopringAccountId; //your loopring account id
 var validUntil = settings.ValidUntil; //the examples seem to use this number
-var maxFeeTokenId = settings.MaxFeeTokenId; //0 should be for ETH, 1 is for LRC?
+var maxFeeTokenId = settings.MaxFeeTokenId; //0 should be for ETH, 1 is for LRC
 var exchange = settings.Exchange; //loopring exchange address, shouldn't need to change this,
 int toAccountId = 0; //leave this as 0 DO NOT CHANGE
 
@@ -70,6 +71,8 @@ while (userResponseReadyToMoveOn == "yes")
             Font.SetTextToBlue("Airdrop the same NFT to any users.");
             Console.WriteLine("Here you will drop one Nft to many users. Check the README for walletAddress.txt setup.");
             Console.WriteLine("Let's get started.");
+            var howManyWallets = Utils.CheckWalletAddresstxt();
+            Font.SetTextToGreen($"You will be transfering to {howManyWallets} wallets.");
             Font.SetTextToBlue("Do you know your Nft's NftData (not the NftId)?");
             userResponseOnNftData = Utils.CheckYesOrNo(userResponseOnNftData.ToLower());
             if (userResponseOnNftData == "yes")
@@ -78,7 +81,7 @@ while (userResponseReadyToMoveOn == "yes")
                 nftData = Console.ReadLine();
                 try
                 {
-                    userNftToken = await loopringService.GetTokenId(settings.LoopringApiKey, settings.LoopringAccountId, nftData);  //the nft tokenId, not the nftId
+                    userNftToken = await loopringService.GetTokenId(settings.LoopringApiKey, settings.LoopringAccountId, nftData); 
                     nftTokenId = userNftToken.data[0].tokenId;
                 }
                 catch (Exception)
@@ -92,32 +95,30 @@ while (userResponseReadyToMoveOn == "yes")
                 Font.SetTextToBlue("Find your Nft on lexplorer.io or explorer.loopring.io.");
                 Console.WriteLine("You should see the Nft Id, Minter, and Token/Collection Address");
                 Font.SetTextToBlue("Enter in the Nft Id");
-                string nftId = Console.ReadLine(); //the amount of the nft to transfer
+                string nftId = Utils.ReadLineWarningNoNulls("Enter in the Nft Id"); 
                 Font.SetTextToBlue("Enter in the Minter");
-                string minter = Console.ReadLine(); //the amount of the nft to transfer
+                string minter = Utils.ReadLineWarningNoNulls("Enter in the Minter"); 
                 Font.SetTextToBlue("Enter in the Token/Collection Address");
-                string tokenAddress = Console.ReadLine(); //the amount of the nft to transfer
+                tokenAddress = Utils.ReadLineWarningNoNulls("Enter in the Token/Collection Address"); 
 
-                var nftdataRequest = await loopringService.GetNftData(nftId, minter, tokenAddress);  //the nft tokenId, not the nftId
+                var nftdataRequest = await loopringService.GetNftData(nftId, minter, tokenAddress); 
                 nftData = nftdataRequest.nftData;
+
+                userNftToken = await loopringService.GetTokenId(settings.LoopringApiKey, settings.LoopringAccountId, nftData);  
+                nftTokenId = userNftToken.data[0].tokenId;
 
             }
             Font.SetTextToBlue("How many of your Nft do you want to transfer to each address?");
-            string nftAmount = Console.ReadLine();
+            nftAmount = Utils.CheckNftSendAmount(howManyWallets, userNftToken.data[0].total);
 
-            userNftToken = await loopringService.GetTokenId(settings.LoopringApiKey, settings.LoopringAccountId, nftData);  //the nft tokenId, not the nftId
-            nftTokenId = userNftToken.data[0].tokenId;
-
-
-            //added lines 35 - 39 and the close curley brackets at 190 and 191.
-            //be sure to add a text file with all the wallet addresses. one on each line.
+            Font.SetTextToBlue("Starting airdrop...");
             using (StreamReader sr = new StreamReader(".\\..\\..\\..\\walletAddresses.txt"))
             {
-                string toAddress;
-                while ((toAddress = sr.ReadLine()) != null)
+                string toAddressInitial;
+                while ((toAddressInitial = sr.ReadLine()) != null)
                 {
                     //remove whitespace after wallet address if it exists.
-                    toAddress = toAddress.ToLower().Trim();
+                    var toAddress = toAddressInitial.ToLower().Trim();
 
                     //Initialize loopring service
                     //ILoopringService loopringService = new LoopringService();
@@ -140,7 +141,7 @@ while (userResponseReadyToMoveOn == "yes")
                         }
                         else
                         {
-                            invalidAddress.Add(toAddress);
+                            invalidAddress.Add(toAddressInitial);
                             Thread.Sleep(1); //for a rate limiter just incase multiple invalid ens
                             continue;
                         }
@@ -283,18 +284,25 @@ while (userResponseReadyToMoveOn == "yes")
                         );
 
                     Console.WriteLine(nftTransferResponse);
-                    validAddress.Add(toAddress);
+                    validAddress.Add(toAddressInitial);
 
                 }
-                Font.SetTextToGreen($"The following were valid addresses that did receive an Nft:");
-                foreach (var address in validAddress)
+                Font.SetTextToBlue("Airdrop finished...");
+                if (validAddress.Count > 0)
                 {
-                    Console.WriteLine(address);
+                    Font.SetTextToGreen($"The following were valid addresses that did receive an Nft.");
+                    foreach (var address in validAddress)
+                    {
+                        Console.WriteLine(address);
+                    }
                 }
-                Font.SetTextToRed($"The following were invalid addresses that did not receive an Nft:");
-                foreach (var address in invalidAddress)
+                if(invalidAddress.Count > 0)
                 {
-                    Console.WriteLine(address);
+                    Font.SetTextToRed($"The following were invalid addresses that did not receive an Nft.");
+                    foreach (var address in invalidAddress)
+                    {
+                        Console.WriteLine(address);
+                    }
                 }
             }
             break;
