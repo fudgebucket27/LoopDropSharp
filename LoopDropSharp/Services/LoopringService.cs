@@ -191,7 +191,7 @@ namespace LoopDropSharp
                 {
                     if (counter != 0)
                     {
-                        Font.SetTextToYellow("This is not an NftData. Please enter in a correct one.");
+                        Font.SetTextToYellow("This is not an NftData or this Nft isn't in your wallet. Please enter in a correct one.");
                         nftData = Console.ReadLine();
                         request.AddOrUpdateParameter("nftDatas", nftData);
                     }

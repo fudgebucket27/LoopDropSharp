@@ -23,6 +23,8 @@ NftBalance userNftToken;
 List<NftHoldersAndTotal> nftHoldersAndTotalList;
 int nftTokenId;
 ILoopringService loopringService = new LoopringService();
+IEthereumService ethereumService = new EthereumService();
+INftMetadataService nftMetadataService = new NftMetadataService("https://loopring.mypinata.cloud/ipfs/");
 List<string> invalidAddress = new List<string>();
 List<string> validAddress = new List<string>();
 
@@ -108,7 +110,9 @@ while (userResponseReadyToMoveOn == "yes")
                 nftTokenId = userNftToken.data[0].tokenId;
 
             }
-            Font.SetTextToBlue("How many of your Nft do you want to transfer to each address?");
+            var nftMetadataLink = await ethereumService.GetMetadataLink(userNftToken.data[0].nftId, userNftToken.data[0].tokenAddress, 0);
+            var nftMetadata = await nftMetadataService.GetMetadata(nftMetadataLink);
+            Font.SetTextToBlue($"How many of '{nftMetadata.name}' do you want to transfer to each address?");
             nftAmount = Utils.CheckNftSendAmount(howManyWallets, userNftToken.data[0].total);
 
             Font.SetTextToBlue("Starting airdrop...");
@@ -290,7 +294,7 @@ while (userResponseReadyToMoveOn == "yes")
                 Font.SetTextToBlue("Airdrop finished...");
                 if (validAddress.Count > 0)
                 {
-                    Font.SetTextToGreen($"The following were valid addresses that did receive an Nft.");
+                    Font.SetTextToGreen($"The following were valid addresses that did receive '{nftMetadata.name}'.");
                     foreach (var address in validAddress)
                     {
                         Console.WriteLine(address);
@@ -298,7 +302,7 @@ while (userResponseReadyToMoveOn == "yes")
                 }
                 if(invalidAddress.Count > 0)
                 {
-                    Font.SetTextToRed($"The following were invalid addresses that did not receive an Nft.");
+                    Font.SetTextToRed($"The following were invalid addresses that did not receive '{nftMetadata.name}'.");
                     foreach (var address in invalidAddress)
                     {
                         Console.WriteLine(address);
