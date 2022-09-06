@@ -187,6 +187,28 @@ namespace LoopDropSharp
             request.AddParameter("nftDatas", nftData);
             try
             {
+                    var response = await _client.GetAsync(request);
+                    data = JsonConvert.DeserializeObject<NftBalance>(response.Content!);
+                    counter++;
+                return data;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                return null;
+            }
+        }
+
+        public async Task<NftBalance> GetTokenIdWithCheck(string apiKey, int accountId, string nftData)
+        {
+            var data = new NftBalance();
+            var counter = 0;
+            var request = new RestRequest("/api/v3/user/nft/balances");
+            request.AddHeader("x-api-key", apiKey);
+            request.AddParameter("accountId", accountId);
+            request.AddParameter("nftDatas", nftData);
+            try
+            {
                 do
                 {
                     if (counter != 0)
@@ -315,6 +337,24 @@ namespace LoopDropSharp
             }
         }
 
+        public async Task<AccountInformation> GetUserAccountInformationFromOwner(string owner)
+        {
+            var request = new RestRequest("/api/v3/account");
+            request.AddParameter("owner", owner);
+            try
+            {
+                var response = await _client.GetAsync(request);
+                var data = JsonConvert.DeserializeObject<AccountInformation>(response.Content!);
+                Thread.Sleep(10);
+                return data;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                return null;
+            }
+        }
+
         public async Task<List<MintsAndTotal>> GetUserMintedNfts(string apiKey, int accountId)
         {
             var allDataMintsAndTotal = new List<MintsAndTotal>();
@@ -358,6 +398,24 @@ namespace LoopDropSharp
             {
                 var response = await _client.GetAsync(request);
                 var data = JsonConvert.DeserializeObject<TransferFeeOffchainFee>(response.Content!);
+                return data;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Console.WriteLine($"Error getting transfer off chain fee: {httpException.Message}");
+                return null;
+            }
+        }
+
+        public async Task<List<NftData>> GetNftInformationFromNftData(string apiKey, string nftData)
+        {
+            var request = new RestRequest("/api/v3/nft/info/nfts");
+            request.AddHeader("x-api-key", apiKey);
+            request.AddParameter("nftDatas", nftData);
+            try
+            {
+                var response = await _client.GetAsync(request);
+                var data = JsonConvert.DeserializeObject<List<NftData>>(response.Content!);
                 return data;
             }
             catch (HttpRequestException httpException)

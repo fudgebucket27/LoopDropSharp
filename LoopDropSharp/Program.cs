@@ -83,7 +83,7 @@ while (userResponseReadyToMoveOn == "yes")
                 nftData = Console.ReadLine();
                 try
                 {
-                    userNftToken = await loopringService.GetTokenId(settings.LoopringApiKey, settings.LoopringAccountId, nftData); 
+                    userNftToken = await loopringService.GetTokenIdWithCheck(settings.LoopringApiKey, settings.LoopringAccountId, nftData); 
                     nftTokenId = userNftToken.data[0].tokenId;
                 }
                 catch (Exception)
@@ -112,6 +112,7 @@ while (userResponseReadyToMoveOn == "yes")
             }
             var nftMetadataLink = await ethereumService.GetMetadataLink(userNftToken.data[0].nftId, userNftToken.data[0].tokenAddress, 0);
             var nftMetadata = await nftMetadataService.GetMetadata(nftMetadataLink);
+
             Font.SetTextToBlue($"How many of '{nftMetadata.name}' do you want to transfer to each address?");
             nftAmount = Utils.CheckNftSendAmount(howManyWallets, userNftToken.data[0].total);
 
@@ -604,8 +605,13 @@ while (userResponseReadyToMoveOn == "yes")
                             {
                                 if (nftHoldersAndTotalSingle == nftHoldersAndTotalList.FirstOrDefault())
                                 {
+                                    var minterFromNftDatas = await loopringService.GetNftInformationFromNftData(settings.LoopringApiKey, nftData);
+                                    var accountIdFromMinter = await loopringService.GetUserAccountInformationFromOwner(minterFromNftDatas[0].minter);
+                                    userNftToken = await loopringService.GetTokenId(settings.LoopringApiKey, accountIdFromMinter.accountId, nftData);
+                                    nftMetadataLink = await ethereumService.GetMetadataLink(userNftToken.data[0].nftId, userNftToken.data[0].tokenAddress, 0);
+                                    nftMetadata = await nftMetadataService.GetMetadata(nftMetadataLink);
 
-                                    Font.SetTextToBlue($"NftData {nftData} has {nftHoldersAndTotalSingle.totalNum} total holders.");
+                                    Font.SetTextToBlue($"{nftMetadata.name}, {nftMetadata.description}, {nftData} has {nftHoldersAndTotalSingle.totalNum} total holders.");
                                     Font.SetTextToGreen($"Wallet Address \t\t\t\t\t\t Total");
                                 };
                                 foreach (var item in nftHoldersAndTotalSingle.nftHolders)
@@ -640,6 +646,7 @@ while (userResponseReadyToMoveOn == "yes")
                     {
                         nftData = mint.nftData;
                         var nftHoldersAndTotal = await loopringService.GetNftHolders(settings.LoopringApiKey, nftData);
+
                         foreach (var item in nftHoldersAndTotal.nftHolders)
                         {
                             var userAccountInformation = await loopringService.GetUserAccountInformation(item.accountId.ToString());
@@ -657,8 +664,13 @@ while (userResponseReadyToMoveOn == "yes")
                     {
                         nftData = mint.nftData;
                         var nftHoldersAndTotal = await loopringService.GetNftHolders(settings.LoopringApiKey, nftData);
-                            Font.SetTextToBlue($"NftData {nftData} has {nftHoldersAndTotal.totalNum} total holders.");
-                            Font.SetTextToGreen($"Wallet Address \t\t\t\t\t\t Total");
+
+                        userNftToken = await loopringService.GetTokenId(settings.LoopringApiKey, mint.accountId, nftData);
+                        nftMetadataLink = await ethereumService.GetMetadataLink(userNftToken.data[0].nftId, userNftToken.data[0].tokenAddress, 0);
+                        nftMetadata = await nftMetadataService.GetMetadata(nftMetadataLink);
+
+                        Font.SetTextToBlue($"{nftMetadata.name}, {nftMetadata.description}, {nftData} has {nftHoldersAndTotal.totalNum} total holders.");
+                        Font.SetTextToGreen($"Wallet Address \t\t\t\t\t\t Total");
                         foreach (var item in nftHoldersAndTotal.nftHolders)
                         {
                             var userAccountInformation = await loopringService.GetUserAccountInformation(item.accountId.ToString());

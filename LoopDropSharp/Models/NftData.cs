@@ -24,6 +24,4 @@ namespace LoopDropSharp
         public string originalMinter { get; set; }
         public long createdAt { get; set; }
     }
-
-
 }
