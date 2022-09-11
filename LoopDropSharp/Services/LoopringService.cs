@@ -36,7 +36,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting storage id: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting storage id: {httpException.Message}");
                 return null;
             }
         }
@@ -56,7 +56,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting off chain fee: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting off chain fee: {httpException.Message}");
                 return null;
             }
         }
@@ -106,7 +106,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error submitting nft transfer: {httpException.Message}");
+                Font.SetTextToWhite($"Error submitting nft transfer: {httpException.Message}");
                 return null;
             }
         }
@@ -155,7 +155,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error submitting token transfer: {httpException.Message}");
+                Font.SetTextToWhite($"Error submitting token transfer: {httpException.Message}");
                 return null;
             }
         }
@@ -173,7 +173,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting ens: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting ens: {httpException.Message}");
                 return null;
             }
         }
@@ -214,7 +214,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
                 return null;
             }
         }
@@ -245,7 +245,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
                 return null;
             }
         }
@@ -271,7 +271,7 @@ namespace LoopDropSharp
                     Font.SetTextToRed("The above information did not find an Nft Data. Please, try again.");
                     return null;
                 }
-                Console.WriteLine($"Error getting NftData: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting NftData: {httpException.Message}");
                 return null;
             }
         }
@@ -303,7 +303,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
                 return null;
             }
         }
@@ -322,7 +322,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
                 return null;
             }
         }
@@ -340,7 +340,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
                 return null;
             }
         }
@@ -363,7 +363,7 @@ namespace LoopDropSharp
                     Font.SetTextToRed("The above information did not find an account. Please, try again.");
                     return null;
                 }
-                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
                 return null;
             }
         }
@@ -394,7 +394,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
                 return null;
             }
         }
@@ -415,7 +415,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting transfer off chain fee: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting transfer off chain fee: {httpException.Message}");
                 return null;
             }
         }
@@ -433,7 +433,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting transfer off chain fee: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting transfer off chain fee: {httpException.Message}");
                 return null;
             }
         }

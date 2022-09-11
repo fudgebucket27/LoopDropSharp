@@ -31,7 +31,6 @@ string userResponseReadyToMoveOn;
 string nftMetadataLink = "";
 NftMetadata nftMetadata = new NftMetadata();
 
-Utils.CheckForAppsettingsDotJson();
 //Settings loaded from the appsettings.json file
 IConfiguration config = new ConfigurationBuilder()
     .AddJsonFile(".\\appsettings.json")
@@ -41,7 +40,7 @@ Settings settings = config.GetRequiredSection("Settings").Get<Settings>();
 
 string loopringApiKey = settings.LoopringApiKey;//loopring api key KEEP PRIVATE
 string loopringPrivateKey = settings.LoopringPrivateKey; //loopring private key KEEP PRIVATE
-var metamaskPrivateKey = settings.MetamaskPrivateKey; //metamask private key KEEP PRIVATE
+var MMorGMEPrivateKey = settings.MMorGMEPrivateKey; //metamask or gamestop private key KEEP PRIVATE
 var fromAddress = settings.LoopringAddress; //your loopring address
 var fromAccountId = settings.LoopringAccountId; //your loopring account id
 var validUntil = settings.ValidUntil; //the examples seem to use this number
@@ -106,7 +105,7 @@ while (userResponseReadyToMoveOn == "yes")
             Font.SetTextToGreen($"You will be transfering to {howManyWallets} wallets.");
             string userResponseOnNftData;
 
-            using (StreamReader sr = new StreamReader(".\\..\\..\\..\\Input.txt"))
+            using (StreamReader sr = new StreamReader(".\\Input.txt"))
             {
                 string nftIdFromText;
                 nftdataRequestForNftData = null;
@@ -200,7 +199,7 @@ while (userResponseReadyToMoveOn == "yes")
                 howManyWallets = Utils.CheckInputDotTxt();
                 Font.SetTextToGreen($"You will be transfering to {howManyWallets} wallets.");
 
-                using (StreamReader sr = new StreamReader(".\\..\\..\\..\\Input.txt"))
+                using (StreamReader sr = new StreamReader(".\\Input.txt"))
                 {
                     while ((nftData = sr.ReadLine()) != null)
                     {
@@ -356,7 +355,7 @@ while (userResponseReadyToMoveOn == "yes")
             nftAmount = Utils.CheckNftSendAmount(howManyWallets, userNftToken.data[0].total);
 
             Font.SetTextToBlue("Starting airdrop...");
-            using (StreamReader sr = new StreamReader(".\\..\\..\\..\\Input.txt"))
+            using (StreamReader sr = new StreamReader(".\\Input.txt"))
             {
                 string toAddressInitial;
                 while ((toAddressInitial = sr.ReadLine()) != null)
@@ -499,7 +498,7 @@ while (userResponseReadyToMoveOn == "yes")
                     };
 
                     Eip712TypedDataSigner signer = new Eip712TypedDataSigner();
-                    var ethECKey = new Nethereum.Signer.EthECKey(metamaskPrivateKey.Replace("0x", ""));
+                    var ethECKey = new Nethereum.Signer.EthECKey(MMorGMEPrivateKey.Replace("0x", ""));
                     var encodedTypedData = signer.EncodeTypedData(eip712TypedData);
                     var ECDRSASignature = ethECKey.SignAndCalculateV(Sha3Keccack.Current.CalculateHash(encodedTypedData));
                     var serializedECDRSASignature = EthECDSASignature.CreateStringSignature(ECDRSASignature);
@@ -558,7 +557,7 @@ while (userResponseReadyToMoveOn == "yes")
             Font.SetTextToBlue("How many of each Nft do you want to transfer to each address?");
             nftAmount = Utils.ReadLineWarningNoNullsForceInt("How many of each Nft do you want to transfer to each address?");
 
-            using (StreamReader sr = new StreamReader(".\\..\\..\\..\\Input.txt"))
+            using (StreamReader sr = new StreamReader(".\\Input.txt"))
             {
 
                 string walletAddressLine;
@@ -712,7 +711,7 @@ while (userResponseReadyToMoveOn == "yes")
                     };
 
                     Eip712TypedDataSigner signer = new Eip712TypedDataSigner();
-                    var ethECKey = new Nethereum.Signer.EthECKey(metamaskPrivateKey.Replace("0x", ""));
+                    var ethECKey = new Nethereum.Signer.EthECKey(MMorGMEPrivateKey.Replace("0x", ""));
                     var encodedTypedData = signer.EncodeTypedData(eip712TypedData);
                     var ECDRSASignature = ethECKey.SignAndCalculateV(Sha3Keccack.Current.CalculateHash(encodedTypedData));
                     var serializedECDRSASignature = EthECDSASignature.CreateStringSignature(ECDRSASignature);
@@ -783,7 +782,7 @@ while (userResponseReadyToMoveOn == "yes")
             }
 
             Font.SetTextToBlue("Starting airdrop...");
-            using (StreamReader sr = new StreamReader(".\\..\\..\\..\\Input.txt"))
+            using (StreamReader sr = new StreamReader(".\\Input.txt"))
             {
 
                 string walletAddressLine;
@@ -945,7 +944,7 @@ while (userResponseReadyToMoveOn == "yes")
                     };
 
                     Eip712TypedDataSigner signerTransfer = new Eip712TypedDataSigner();
-                    var ethECKeyTransfer = new Nethereum.Signer.EthECKey(metamaskPrivateKey.Replace("0x", ""));
+                    var ethECKeyTransfer = new Nethereum.Signer.EthECKey(MMorGMEPrivateKey.Replace("0x", ""));
                     var encodedTypedDataTransfer = signerTransfer.EncodeTypedData(eip712TypedDataTransfer);
                     var ECDRSASignatureTransfer = ethECKeyTransfer.SignAndCalculateV(Sha3Keccack.Current.CalculateHash(encodedTypedDataTransfer));
                     var serializedECDRSASignatureTransfer = EthECDSASignature.CreateStringSignature(ECDRSASignatureTransfer);
@@ -998,3 +997,4 @@ while (userResponseReadyToMoveOn == "yes")
     userResponseReadyToMoveOn = Utils.CheckYesOrNo();
 }
 Menu.FooterForLoopDropSharp();
+Console.ReadLine();

@@ -123,6 +123,12 @@ namespace LoopDropSharp
             Console.WriteLine($"{str}", Console.ForegroundColor);
             Console.ResetColor();
         }
+        public static void SetTextToWhite(string str)
+        {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"{str}", Console.ForegroundColor);
+            Console.ResetColor();
+        }
         public static void PowerToTheCreators()
         {
             Font.SetTextToRedInline("+-+-+-+-+-+-+-+-+-+-+-");
