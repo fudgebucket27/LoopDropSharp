@@ -1,17 +1,29 @@
 # LoopDropSharp
-This application can airdrop NFTs and other tokens on Loopring Layer 2.
+Batch airdrop NFTs and tokens on Loopring Layer 2.
+Nft Lookups and Tips as well
 
-https://cobmin.io/posts/Airdrop-Nfts-on-Loopring
+This is a Console App on .NET 6. To build and compile this yourself you need something like Visual Studio 2022.
+
+I suggest downloading one of the compiled releases.
 
 ## Setup
 
-Here is a video going over the setup: https://youtu.be/Bkl6BwfA6jE
+The following instructions in this README are for version 1 and above. For version 1 and above you can follow the [Video Tutorial](url)
+For versions before 1 [see this](https://youtu.be/Bkl6BwfA6jE)
 
+Download one of the compiled releases in the [Releases](https://github.com/cobmin/LoopDropSharp/releases/tag/v1.0.0) section and unzip it into a location of your choice. You will need to edit the included appsettings.json file with your own Loopring details; ie api key, private key,address(not your ENS) and account id. You can export these out from your account via https://loopring.io . Remember to keep these values private and do not share with anyone!
+
+macOS users: You also need to run the following command in the unzipped folder of LoopDropSharp to turn it into an executable in order to run it. You may also need to add it as a trusted application if it get's blocked from running.
+
+```
+chmod +x LoopDropSharp
+If compiling yourself please read the section about it below.
+```
 This application uses a ***Metamask/GameStop*** private key to sign the transfers so you will need to export that out from your Metamask/GameStop account. You can export the Loopring related account details from the "Security" tab while logged into https://loopring.io. Make sure these details are from the same account.
 
-DO NOT SHARE ANY API OR PRIVATE KEYS with anyone else!!!!!!!
+## Compiling yourself
 
-This was written in .NET 6 so you need an IDE that can compile it. 
+If compiling yourself. You need to generate an appsettings.json file in the project directory with the "Copy to Output directory" set to "Copy Always". The appsettings.json file should look like the following, remember to keep these values private and do not share with anyone!
 
 You will need to change the "appsettings.json" file in the project directory with the necessary information.
 
@@ -32,17 +44,20 @@ You will need to change the "appsettings.json" file in the project directory wit
 After setting up the appsettings.json, execute the solution and follow the prompts.
 
 ## Text File setup
-Wallet Address setup for: 1. Airdrop the same NFT to any users.
-In the walletAddresses.txt located in the project directory add your wallet addresses. You will have one wallet address on one line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS. 
+### Utility 2: Find Nft Datas from Nft Ids
+In the Input.txt located in the project directory add your nft Ids. You will have one Id each line. Each Id will be one lookup.
 
-Wallet Address setup for: 2. Airdrop unique NFTs to any users
-In the walletAddresses.txt located in the project directory add your wallet address a comma and then the nft data (example: 0x4a71e0267207cec67c78df8857d81c508d43b00d,0x103cb20d3b310873f711d25758d57f18ba77a6b7842ae605d662e0ddd908ed5a). You will have one wallet address and nft data on each line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
+### Utility 4: Find Nft Holders from Nft Data
+In the Input.txt located in the project directory add your nft Data. You will have one nft Data on each line. Each nft Data will be one lookup.
 
-Nft Data setup for: 4. Find Nft Holders from Nft Data.
-In the nftData.txt located in the project directory add your Nft Data. You will have one Nft Data on one line. 
+### Utility 6: Airdrop the same NFT to any users
+In the Input.txt located in the project directory add your wallet addresses that you want to transfer to. You will have one wallet address on each line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
 
-Wallet Address setup for: 7. Airdrop LRC/ETH to any users.
-In the walletAddresses.txt located in the project directory add your wallet addresses. You will have one wallet address on one line. Each wallet address will be one transfer of LRC/ETH. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS. 
+### Utility 7: Airdrop unique NFTs to any users
+In the Input.txt located in the project directory add your wallet address a comma and then the nft data (example: 0x4a71e0267207cec67c78df8857d81c508d43b00d,0x103cb20d3b310873f711d25758d57f18ba77a6b7842ae605d662e0ddd908ed5a). You will have one wallet address and one nft data on each line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
+
+### Utility 8: Airdrop LRC/ETH to any users
+In the Input.txt located in the project directory add your wallet addresses. You will have one wallet address on one line. Each wallet address will be one transfer of LRC/ETH. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS. 
 
 When transfering, a successful Nft transfer will return the following JSON response:
 
@@ -56,14 +71,9 @@ When transfering, a successful Nft transfer will return the following JSON respo
   "storageId": 169
 }
 ```
+## Video Tutorial for Version 1 and above
+Here is a video going over the setup: 
 
-## Credits
-The original boiler plate was originally made by myself, then Cobmin did some major modifications on a fork which I accepted into master. Cobmin was then added as a collaborator, and the project was reborn as LoopDropSharp
+## Video Tutorial for Versions below 1
+Here is a video going over the setup: https://youtu.be/Bkl6BwfA6jE
 
-Also thanks to:
-
-ItsMonty.eth for the original NFT Transfer code in the [LooPyMinty](https://github.com/Montspy/LooPyMinty) repo which I converted to C#.
-
-Also thanks to Taranasus for his [LoopringSharp](https://github.com/taranasus/LoopringSharp) repo for the ECDSA signing which I also used.
-
-I also used my own PoseidonSharp library for generating the Poseidon hashes and EDDSA signing.
