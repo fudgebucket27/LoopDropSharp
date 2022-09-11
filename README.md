@@ -79,3 +79,6 @@ Here is a video going over the setup:
 ## Video Tutorial for Versions below 1
 Here is a video going over the setup: https://youtu.be/Bkl6BwfA6jE
 
+## Further Information or Help
+Check out my post https://cobmin.io/posts/LoopDropSharp
+
