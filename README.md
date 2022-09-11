@@ -9,9 +9,12 @@ I suggest downloading one of the compiled releases.
 ## Setup
 
 The following instructions in this README are for version 1 and above. For version 1 and above you can follow the [Video Tutorial](url)
+
 For versions before 1 [see this](https://youtu.be/Bkl6BwfA6jE)
 
-Download one of the compiled releases in the [Releases](https://github.com/cobmin/LoopDropSharp/releases/tag/v1.0.0) section and unzip it into a location of your choice. You will need to edit the included appsettings.json file with your own Loopring details; ie api key, private key,address(not your ENS) and account id. You can export these out from your account via https://loopring.io . Remember to keep these values private and do not share with anyone!
+Download one of the compiled releases in the [Releases](https://github.com/cobmin/LoopDropSharp/releases/tag/v1.0.0) section and unzip it into a location of your choice. You will need to edit the included appsettings.json file with your own Loopring details. 
+
+This application uses a ***Metamask/GameStop*** private key to sign the transfers so you will need to export that out from your Metamask/GameStop account. You can export the Loopring related account details from the "Security" tab while logged into https://loopring.io. Make sure these details are from the same account. Remember to keep these values private and do not share with anyone!
 
 macOS users: You also need to run the following command in the unzipped folder of LoopDropSharp to turn it into an executable in order to run it. You may also need to add it as a trusted application if it get's blocked from running.
 
@@ -19,7 +22,6 @@ macOS users: You also need to run the following command in the unzipped folder o
 chmod +x LoopDropSharp
 If compiling yourself please read the section about it below.
 ```
-This application uses a ***Metamask/GameStop*** private key to sign the transfers so you will need to export that out from your Metamask/GameStop account. You can export the Loopring related account details from the "Security" tab while logged into https://loopring.io. Make sure these details are from the same account.
 
 ## Compiling yourself
 
