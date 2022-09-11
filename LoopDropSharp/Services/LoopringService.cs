@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -176,6 +177,25 @@ namespace LoopDropSharp
                 return null;
             }
         }
+        public async Task<string> CheckForEthAddress(string apiKey, string address)
+        {
+            string minterForNftData = address;
+            if (address.Contains(".eth"))
+            {
+                var varHexAddress = await GetHexAddress(apiKey, minterForNftData);
+                if (!String.IsNullOrEmpty(varHexAddress.data))
+                {
+                    minterForNftData = varHexAddress.data;
+                    return minterForNftData;
+                }
+                else
+                {
+                    Font.SetTextToYellow($"{minterForNftData} is an invalid address");
+                    return null;
+                }
+            }
+            return address;
+        }
 
         public async Task<NftBalance> GetTokenId(string apiKey, int accountId, string nftData)
         {
@@ -230,40 +250,28 @@ namespace LoopDropSharp
             }
         }
 
-        public async Task<NftData> GetNftData(string nftId, string minter, string tokenAddress)
+        public async Task<NftData> GetNftData(string apiKey, string nftId, string minter, string tokenAddress)
         {
             var data = new NftData();
-            var counter = 0;
             var request = new RestRequest("/api/v3/nft/info/nftData");
+            request.AddHeader("X-API-KEY", apiKey);
             request.AddParameter("nftId", nftId);
             request.AddParameter("minter", minter);
             request.AddParameter("tokenAddress", tokenAddress);
             try
             {
-                do
-                {
-                    if (counter != 0)
-                    {
-                        Font.SetTextToYellow("The above information did not find Nft Data. Please try again.");
-                        Font.SetTextToBlue("Enter in the Nft Id");
-                        nftId = Utils.ReadLineWarningNoNulls("Enter in the Nft Id");
-                        Font.SetTextToBlue("Enter in the Minter");
-                        minter = Utils.ReadLineWarningNoNulls("Enter in the Minter");
-                        Font.SetTextToBlue("Enter in the Token/Collection Address");
-                        tokenAddress = Utils.ReadLineWarningNoNulls("Enter in the Token/Collection Address");
-                        request.AddOrUpdateParameter("nftId", nftId);
-                        request.AddOrUpdateParameter("minter", minter);
-                        request.AddOrUpdateParameter("tokenAddress", tokenAddress);
-                    }
                     var response = await _client.GetAsync(request);
                     data = JsonConvert.DeserializeObject<NftData>(response.Content!);
-                    counter++;
-                } while (data == null);
                 return data;
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                if (httpException.Message == "Request failed with status code BadRequest")
+                {
+                    Font.SetTextToRed("The above information did not find an Nft Data. Please, try again.");
+                    return null;
+                }
+                Console.WriteLine($"Error getting NftData: {httpException.Message}");
                 return null;
             }
         }
@@ -350,6 +358,11 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
+                if (httpException.Message == "Request failed with status code BadRequest")
+                {
+                    Font.SetTextToRed("The above information did not find an account. Please, try again.");
+                    return null;
+                }
                 Console.WriteLine($"Error getting TokenId: {httpException.Message}");
                 return null;
             }
