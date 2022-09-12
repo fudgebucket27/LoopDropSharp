@@ -16,7 +16,7 @@ Download one of the compiled releases in the [Releases](https://github.com/cobmi
 
 This application uses a ***Metamask/GameStop*** private key to sign the transfers so you will need to export that out from your Metamask/GameStop account. You can export the Loopring related account details from the "Security" tab while logged into https://loopring.io. Make sure these details are from the same account. Remember to keep these values private and do not share with anyone!
 
-macOS users: You also need to run the following command in the unzipped folder of LoopDropSharp to turn it into an executable in order to run it. You may also need to add it as a trusted application if it get's blocked from running.
+macOS users: You also need to run the following command in the unzipped folder of LoopDropSharp to turn it into an executable in order to run it. You may also need to add it as a trusted application if it get's blocked from running (Settings > Security & Privacy).
 
 ```
 chmod +x LoopDropSharp
@@ -45,7 +45,7 @@ You will need to change the "appsettings.json" file in the project directory wit
 ```
 After setting up the appsettings.json, execute the solution and follow the prompts.
 
-## Text File setup
+# Text File setup
 ### Utility 2: Find Nft Datas from Nft Ids
 In the Input.txt located in the project directory add your nft Ids. You will have one Id each line. Each Id will be one lookup.
 
