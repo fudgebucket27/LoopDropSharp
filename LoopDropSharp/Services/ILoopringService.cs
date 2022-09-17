@@ -57,6 +57,8 @@ namespace LoopDropSharp
         Task<AccountInformation> GetUserAccountInformation(string accountId);
         Task<AccountInformation> GetUserAccountInformationFromOwner(string owner);
         Task<List<MintsAndTotal>> GetUserMintedNfts(string apiKey, int accountId);
+        Task<List<NftData>> GetUserMintedNftsWithCollection(string apiKey, int accountId, string collectionId);
         Task<List<NftData>> GetNftInformationFromNftData(string apiKey, string nftData);
+        Task<bool> CheckBanishTextFile(string toAddressInitial, string toAddress, string loopringApiKey);
     }
 }

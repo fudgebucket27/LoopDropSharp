@@ -13,8 +13,8 @@ namespace LoopDropSharp.Helpers
             var result = new MinterAndCollection();
             Font.SetTextToBlue("Enter in the Minter");
             string minter = Utils.ReadLineWarningNoNulls("Enter in the Minter");
-            Font.SetTextToBlue("Enter in the Token/Collection Address");
-            string TokenId = Utils.ReadLineWarningNoNulls("Enter in the Token / Collection Address");
+            Font.SetTextToBlue("Enter in the TokenId/Collection Address");
+            string TokenId = Utils.ReadLineWarningNoNulls("Enter in the TokenId/Collection Address");
             result.minter = minter;
             result.TokenId = TokenId;
             return result;

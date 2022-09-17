@@ -33,6 +33,14 @@ namespace LoopDropSharp
             Console.ResetColor();
             SetTextToYellow(end);
         }
+        public static void SetREADMEFontColorDarkGray(string beginning, string readMe, string end)
+        {
+            SetTextToDarkGrayInline(beginning);
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write($"{readMe}", Console.ForegroundColor);
+            Console.ResetColor();
+            SetTextToDarkGray(end);
+        }
         public static void SetTextToBlue(string str) {  
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"{str}", Console.ForegroundColor);
@@ -83,6 +91,12 @@ namespace LoopDropSharp
             Console.WriteLine($"{str}", Console.ForegroundColor);
             Console.ResetColor();
         }
+        public static void SetTextToGreenInline(string str)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write($"{str}", Console.ForegroundColor);
+            Console.ResetColor();
+        }
         public static void SetTextToDarkGreen(string str)
         {
             Console.ForegroundColor = ConsoleColor.DarkGreen;
@@ -121,6 +135,12 @@ namespace LoopDropSharp
         {
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine($"{str}", Console.ForegroundColor);
+            Console.ResetColor();
+        }
+        public static void SetTextToDarkGrayInline(string str)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write($"{str}", Console.ForegroundColor);
             Console.ResetColor();
         }
         public static void SetTextToWhite(string str)

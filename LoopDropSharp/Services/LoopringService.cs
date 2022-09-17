@@ -262,6 +262,7 @@ namespace LoopDropSharp
             {
                     var response = await _client.GetAsync(request);
                     data = JsonConvert.DeserializeObject<NftData>(response.Content!);
+                Thread.Sleep(20);
                 return data;
             }
             catch (HttpRequestException httpException)
@@ -399,6 +400,55 @@ namespace LoopDropSharp
             }
         }
 
+        public async Task<List<NftData>> GetUserMintedNftsWithCollection(string apiKey, int accountId, string collectionId)
+        {
+            Font.SetTextToBlue("Starting...");
+            Font.SetTextToYellow("This may take a while depending on the minter and collection.");
+            var allDataMintsAndTotal = new List<MintsAndTotal>();
+            var allDataMintsAndTotalInCollection = new List<NftData>();
+            var request = new RestRequest("/api/v3/user/nft/mints");
+            request.AddHeader("X-API-KEY", apiKey);
+            request.AddParameter("accountId", accountId);
+            request.AddParameter("limit", 50);
+            try
+            {
+                var response = await _client.GetAsync(request);
+                var data = JsonConvert.DeserializeObject<MintsAndTotal>(response.Content!);
+                var total = data.totalNum;
+                allDataMintsAndTotal.Add(data);
+                while (total > 50)
+                {
+                    total = total - 50;
+                    var createdAt = allDataMintsAndTotal.LastOrDefault().mints.LastOrDefault().createdAt;
+                    request.AddOrUpdateParameter("end", createdAt);
+                    response = await _client.GetAsync(request);
+                    var moreData = JsonConvert.DeserializeObject<MintsAndTotal>(response.Content!);
+                    allDataMintsAndTotal.Add(moreData);
+                }
+                foreach (var item in allDataMintsAndTotal)
+                {
+                    var mints = item.mints;
+                    foreach (var mint in mints)
+                    {
+                        var nftDataInformationList = await GetNftInformationFromNftData(apiKey, mint.nftData);
+                        foreach (var nftDataInformation in nftDataInformationList)
+                        {
+                            if (nftDataInformation.tokenAddress == collectionId)
+                            {
+                                allDataMintsAndTotalInCollection.Add(nftDataInformation);
+                            }
+                        }
+                    }
+                }
+                return allDataMintsAndTotalInCollection;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
+                return null;
+            }
+        }
+
         public async Task<TransferFeeOffchainFee> GetOffChainTransferFee(string apiKey, int accountId, int requestType, string feeToken, string amount)
         {
             var request = new RestRequest("api/v3/user/offchainFee");
@@ -429,6 +479,7 @@ namespace LoopDropSharp
             {
                 var response = await _client.GetAsync(request);
                 var data = JsonConvert.DeserializeObject<List<NftData>>(response.Content!);
+                Thread.Sleep(100);
                 return data;
             }
             catch (HttpRequestException httpException)
@@ -436,6 +487,44 @@ namespace LoopDropSharp
                 Font.SetTextToWhite($"Error getting transfer off chain fee: {httpException.Message}");
                 return null;
             }
+        }
+
+        public async Task<bool> CheckBanishTextFile(string toAddressInitial, string toAddress, string loopringApiKey)
+        {
+            List<string> banishAddresses = new List<string>();
+            bool banned;
+            string banishAddress;
+            using (StreamReader sr = new StreamReader(".\\Banish.txt"))
+            {
+                while ((banishAddress = sr.ReadLine()) != null)
+                {
+                    if (banishAddress.Contains(".eth"))
+                    {
+                        Thread.Sleep(100);
+                        var varHexAddress = await GetHexAddress(loopringApiKey, banishAddress);
+                        if (!String.IsNullOrEmpty(varHexAddress.data))
+                        {
+                            banishAddress = varHexAddress.data.ToLower().Trim();
+                        }
+                        else
+                        {
+                            //invalidAddress.Add(toAddressInitial);
+                            Console.WriteLine($"Invalid address: {banishAddress}. Could not find an associated wallet.");
+                            //continue;
+                        }
+                    }
+                    banishAddresses.Add(banishAddress.ToLower().Trim());
+                }
+            }
+            if (banishAddresses.Contains(toAddress) || banishAddresses.Contains(toAddressInitial.Trim().ToLower()))
+            {
+                banned = true;
+            }
+            else
+            {
+                banned = false;
+            }
+            return banned;
         }
 
         public void Dispose()
