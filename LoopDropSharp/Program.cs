@@ -33,7 +33,7 @@ NftMetadata nftMetadata = new NftMetadata();
 
 //Settings loaded from the appsettings.json file
 IConfiguration config = new ConfigurationBuilder()
-    .AddJsonFile(".\\appsettings.json")
+    .AddJsonFile("./appsettings.json")
     .AddEnvironmentVariables()
     .Build();
 Settings settings = config.GetRequiredSection("Settings").Get<Settings>();
@@ -105,7 +105,7 @@ while (userResponseReadyToMoveOn == "yes")
             Font.SetTextToGreen($"You will be transfering to {howManyWallets} wallets.");
             string userResponseOnNftData;
 
-            using (StreamReader sr = new StreamReader(".\\Input.txt"))
+            using (StreamReader sr = new StreamReader("./Input.txt"))
             {
                 string nftIdFromText;
                 nftdataRequestForNftData = null;
@@ -199,7 +199,7 @@ while (userResponseReadyToMoveOn == "yes")
                 howManyWallets = Utils.CheckInputDotTxt();
                 Font.SetTextToGreen($"You will be transfering to {howManyWallets} wallets.");
 
-                using (StreamReader sr = new StreamReader(".\\Input.txt"))
+                using (StreamReader sr = new StreamReader("./Input.txt"))
                 {
                     while ((nftData = sr.ReadLine()) != null)
                     {
@@ -355,7 +355,7 @@ while (userResponseReadyToMoveOn == "yes")
             nftAmount = Utils.CheckNftSendAmount(howManyWallets, userNftToken.data[0].total);
 
             Font.SetTextToBlue("Starting airdrop...");
-            using (StreamReader sr = new StreamReader(".\\Input.txt"))
+            using (StreamReader sr = new StreamReader("./Input.txt"))
             {
                 string toAddressInitial;
                 while ((toAddressInitial = sr.ReadLine()) != null)
@@ -557,7 +557,7 @@ while (userResponseReadyToMoveOn == "yes")
             Font.SetTextToBlue("How many of each Nft do you want to transfer to each address?");
             nftAmount = Utils.ReadLineWarningNoNullsForceInt("How many of each Nft do you want to transfer to each address?");
 
-            using (StreamReader sr = new StreamReader(".\\Input.txt"))
+            using (StreamReader sr = new StreamReader("./Input.txt"))
             {
 
                 string walletAddressLine;
@@ -782,7 +782,7 @@ while (userResponseReadyToMoveOn == "yes")
             }
 
             Font.SetTextToBlue("Starting airdrop...");
-            using (StreamReader sr = new StreamReader(".\\Input.txt"))
+            using (StreamReader sr = new StreamReader("./Input.txt"))
             {
 
                 string walletAddressLine;
