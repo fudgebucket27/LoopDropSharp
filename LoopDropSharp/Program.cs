@@ -98,14 +98,14 @@ while (userResponseReadyToMoveOn == "yes")
                 nftdataRequestForNftData = await loopringService.GetNftData(settings.LoopringApiKey, nftIdForNftData, minterAndCollection.minter, minterAndCollection.TokenId);  //the nft tokenId, not the nftId
             } while (nftdataRequestForNftData == null);
 
-            Font.SetTextToBlueInline($"This Nft's Nft Data is: "); 
+            Font.SetTextToBlueInline($"This Nft's Nft Data is: ");
             Font.SetTextToGreen($"{nftdataRequestForNftData.nftData}");
             break;
         #endregion case 1
         #region case 2
         case "2":
             Font.SetTextToBlue(allUtilities.ElementAt(2).Value);
-            Font.SetTextToBlue("Here you will provide the Nft Id and get the associated Nft Data." );
+            Font.SetTextToBlue("Here you will provide the Nft Id and get the associated Nft Data.");
             Font.SetTextToYellow("All Nft Ids have to be from the same collection.");
             Font.SetTextToWhite("Let's get started.");
             var howManyWallets = Utils.CheckInputDotTxt();
@@ -119,7 +119,8 @@ while (userResponseReadyToMoveOn == "yes")
                 var counter = 0;
                 while ((nftIdFromText = sr.ReadLine()) != null)
                 {
-                    do {
+                    do
+                    {
                         var nftIdForNftData = nftIdFromText;
                         if (minterAndCollection.minter.Contains(".eth"))
                         {
@@ -157,7 +158,8 @@ while (userResponseReadyToMoveOn == "yes")
             Font.SetTextToBlue(allUtilities.ElementAt(3).Value);
             Font.SetTextToBlue("Here you will get all the Nft Data from the Nfts in a Collection.");
             Font.SetTextToWhite("Let's get started.");
-            do {
+            do
+            {
                 minterAndCollection = UtilsLoopring.GetMinterAndCollection();
                 responseOnMinter = await loopringService.CheckForEthAddress(settings.LoopringApiKey, minterAndCollection.minter);
                 responseOnAccountId = await loopringService.GetUserAccountInformationFromOwner(responseOnMinter);
@@ -207,9 +209,6 @@ while (userResponseReadyToMoveOn == "yes")
             else if (userResponseOnMany == "many")
             {
                 howManyWallets = Utils.CheckInputDotTxt();
-
-                Font.SetTextToGreen($"You will be transfering to {howManyWallets} wallets.");
-
                 using (StreamReader sr = new StreamReader("./Input.txt"))
                 {
                     Font.SetTextToGreen("Would you like to view just the wallet addresses?");
@@ -436,14 +435,15 @@ while (userResponseReadyToMoveOn == "yes")
             {
                 Font.SetTextToBlue("Find your Nft on lexplorer.io or explorer.loopring.io.");
                 Console.WriteLine("You should see the Nft Id, Minter, and Token/Collection Address");
-            do {
+                do
+                {
                     Font.SetTextToBlue("Enter in the Nft Id");
                     string nftId = Utils.ReadLineWarningNoNulls("Enter in the Nft Id");
                     minterAndCollection = UtilsLoopring.GetMinterAndCollection();
                     minterAndCollection.minter = await loopringService.CheckForEthAddress(settings.LoopringApiKey, minterAndCollection.minter);
                     nftdataRequest = await loopringService.GetNftData(settings.LoopringApiKey, nftId, minterAndCollection.minter, minterAndCollection.TokenId);
-            } while (nftdataRequest == null) ;
-            nftData = nftdataRequest.nftData;
+                } while (nftdataRequest == null);
+                nftData = nftdataRequest.nftData;
 
                 userNftToken = await loopringService.GetTokenId(settings.LoopringApiKey, settings.LoopringAccountId, nftData);
                 nftTokenId = userNftToken.data[0].tokenId;
@@ -649,11 +649,7 @@ while (userResponseReadyToMoveOn == "yes")
             Font.SetTextToBlue("How many of each Nft do you want to transfer to each address?");
             nftAmount = Utils.ReadLineWarningNoNullsForceInt("How many of each Nft do you want to transfer to each address?");
 
-            using (StreamReader sr = new StreamReader("./Input.txt"))
-            {
-
             string walletAddressLine;
-
 
             Font.SetTextToBlue("Starting airdrop...");
             using (StreamReader sr = new StreamReader("./Input.txt"))
@@ -697,7 +693,7 @@ while (userResponseReadyToMoveOn == "yes")
                             continue;
                         }
                     }
-                    
+
                     contains = await loopringService.CheckBanishTextFile(toAddressInitial, toAddress, settings.LoopringApiKey);
                     if (contains == true)
                     {
@@ -1306,7 +1302,7 @@ while (userResponseReadyToMoveOn == "yes")
                 Utils.ShowAirdropAuditCrypto(validAddress, invalidAddress, banishAddress, transferTokenSymbol);
             }
             break;
-        #endregion case 10
+            #endregion case 10
     }
     validAddress.Clear();
     invalidAddress.Clear();
