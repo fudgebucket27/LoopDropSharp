@@ -1,5 +1,6 @@
 ﻿using LoopDropSharp;
 using Nethereum.Signer.EIP712;
+using Nethereum.Util;
 using PoseidonSharp;
 using System;
 using System.Collections.Generic;
@@ -153,7 +154,8 @@ namespace LoopDropSharp
             {
                 if (counter == 0)
                 {
-                    Font.SetTextToBlue("Did you setup your Input.txt?");
+                    Font.SetTextToGreenInline("Did you setup your Input.txt? ");
+                    Font.SetREADMEFontColorDarkGray("Check the ", "README", $" for Input.txt setup.");
                     userResponseOnWalletSetup = CheckYes();
                     sr = new StreamReader("./Input.txt");
                     counter++;
@@ -189,7 +191,8 @@ namespace LoopDropSharp
             {
                 if (counter == 0)
                 {
-                    Font.SetTextToBlue("Did you setup your Input.txt?");
+                    Font.SetTextToGreenInline("Did you setup your Input.txt? ");
+                    Font.SetREADMEFontColorDarkGray("Check the ", "README", $" for Input.txt setup.");
                     CheckYes();
                     sr = new StreamReader("./Input.txt");
                     counter++;
@@ -198,7 +201,7 @@ namespace LoopDropSharp
                 {
                     if (noDoubleWarning == false)
                     {
-                    Font.SetREADMEFontColorYellow("It doesn't look like you did. Please refer to the ", "README", " and respond yes when you are ready.");
+                        Font.SetREADMEFontColorYellow("It doesn't look like you did. Please refer to the ", "README", " and respond yes when you are ready.");
                     }
                     CheckYes();
                     sr = new StreamReader("./Input.txt");
@@ -216,6 +219,7 @@ namespace LoopDropSharp
                 sr.Dispose();
                 try
                 {
+                    sr = new StreamReader("./Input.txt");
                     string[] walletAddressLineArray = sr.ReadLine().Split(',');
                     var toAddress = walletAddressLineArray[0].ToLower().Trim();
                 }
@@ -234,7 +238,6 @@ namespace LoopDropSharp
             StreamReader sr;
             string walletAddresses;
             int howManyWalletAddresses;
-            var userResponseOnWalletSetup = "";
             do
             {
 
@@ -264,7 +267,7 @@ namespace LoopDropSharp
             while ((howManyWallets * int.Parse(nftAmount)) > int.Parse(userNftTokentotalNum))
             {
                 Font.SetTextToRed($"Math Error. You have {userNftTokentotalNum} of this Nft in your wallet and want to " +
-                    $"send to {nftAmount} of them to {howManyWallets} wallets.");
+                    $"send to {nftAmount} of them to {howManyWallets} wallets each.");
                 Font.SetTextToBlue("How many of your Nft do you want to transfer to each address?");
                 do
                 {
@@ -313,6 +316,88 @@ namespace LoopDropSharp
                 number = decimal.TryParse(s, out i);
             }
             return i;
+        }
+
+        public static void ShowAirdropAudit(List<string> validAddress, List<string> invalidAddress, List<string> banishAddress, string? nftMetadataName)
+        {
+            if (validAddress.Count > 0)
+            {
+                Font.SetTextToGreen($"The following were valid addresses that did receive '{nftMetadataName}'.");
+                foreach (var address in validAddress)
+                {
+                    Console.WriteLine(address);
+                }
+            }
+            if (invalidAddress.Count > 0)
+            {
+                Font.SetTextToRed($"The following were invalid addresses that did not receive '{nftMetadataName}'.");
+                foreach (var address in invalidAddress)
+                {
+                    Console.WriteLine(address);
+                }
+            }
+            if (banishAddress.Count > 0)
+            {
+                Font.SetTextToRed($"The following were banish addresses that did not receive '{nftMetadataName}'.");
+                foreach (var address in banishAddress)
+                {
+                    Console.WriteLine(address);
+                }
+            }
+        }
+        public static void ShowAirdropAuditAmbiguous(List<string> validAddress, List<string> invalidAddress, List<string> banishAddress)
+        {
+            if (validAddress.Count > 0)
+            {
+                Font.SetTextToGreen($"The following were valid addresses that did receive their Nft.");
+                foreach (var address in validAddress)
+                {
+                    Console.WriteLine(address);
+                }
+            }
+            if (invalidAddress.Count > 0)
+            {
+                Font.SetTextToRed($"The following were invalid addresses or the nftData was invalid and they not receive their Nft.");
+                foreach (var address in invalidAddress)
+                {
+                    Console.WriteLine(address);
+                }
+            }
+            if (banishAddress.Count > 0)
+            {
+                Font.SetTextToRed($"The following were banish addresses that did not receive their Nft.");
+                foreach (var address in banishAddress)
+                {
+                    Console.WriteLine(address);
+                }
+            }
+        }
+        public static void ShowAirdropAuditCrypto(List<string> validAddress, List<string> invalidAddress, List<string> banishAddress, string transferTokenSymbol)
+        {
+            if (validAddress.Count > 0)
+            {
+                Font.SetTextToGreen($"The following were valid addresses that did receive {transferTokenSymbol}.");
+                foreach (var address in validAddress)
+                {
+                    Console.WriteLine(address);
+                }
+            }
+            if (invalidAddress.Count > 0)
+            {
+                Font.SetTextToRed($"The following were invalid addresses that did not receive {transferTokenSymbol}.");
+                foreach (var address in invalidAddress)
+                {
+                    Console.WriteLine(address);
+                }
+            }
+            if (banishAddress.Count > 0)
+            {
+                Font.SetTextToRed($"The following were banish addresses that did not receive {transferTokenSymbol}.");
+                foreach (var address in banishAddress)
+                {
+                    Console.WriteLine(address);
+                }
+            }
         }
 
         public static int GetUnixTimestamp() => (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
