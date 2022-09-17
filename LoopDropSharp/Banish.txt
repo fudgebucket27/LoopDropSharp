@@ -1,2 +1,1 @@
-jacobhuber.loopring.eth
-peteszah.loopring.eth
+0x000000000000000000000000000000000000dead
