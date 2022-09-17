@@ -494,7 +494,7 @@ namespace LoopDropSharp
             List<string> banishAddresses = new List<string>();
             bool banned;
             string banishAddress;
-            using (StreamReader sr = new StreamReader(".\\Banish.txt"))
+            using (StreamReader sr = new StreamReader("./Banish.txt"))
             {
                 while ((banishAddress = sr.ReadLine()) != null)
                 {

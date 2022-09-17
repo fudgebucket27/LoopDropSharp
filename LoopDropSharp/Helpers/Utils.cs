@@ -157,14 +157,14 @@ namespace LoopDropSharp
                     Font.SetTextToGreenInline("Did you setup your Input.txt? ");
                     Font.SetREADMEFontColorDarkGray("Check the ", "README", $" for Input.txt setup.");
                     userResponseOnWalletSetup = CheckYes();
-                    sr = new StreamReader(".\\Input.txt");
+                    sr = new StreamReader("./Input.txt");
                     counter++;
                 }
                 else
                 {
                     Font.SetREADMEFontColorYellow("It doesn't look like you did. Please refer to the ","README", " and respond yes when you are ready.");
                     userResponseOnWalletSetup = CheckYes();
-                    sr = new StreamReader(".\\Input.txt");
+                    sr = new StreamReader("./Input.txt");
                 }
                 walletAddresses = sr.ReadToEnd().Replace("\r\n", "\r");
                 howManyWalletAddresses = walletAddresses.Split('\r').Length;
@@ -241,7 +241,7 @@ namespace LoopDropSharp
             do
             {
 
-                sr = new StreamReader(".\\Input.txt");
+                sr = new StreamReader("./Input.txt");
                 walletAddresses = sr.ReadToEnd().Replace("\r\n", "\r");
                 howManyWalletAddresses = walletAddresses.Split('\r').Length;
                 if (walletAddresses.EndsWith('\r'))
