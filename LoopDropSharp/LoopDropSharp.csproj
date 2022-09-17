@@ -10,7 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="LoopDropSharpLogo.ico" />
+    <Content Include="LoopDropSharpLogo.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
