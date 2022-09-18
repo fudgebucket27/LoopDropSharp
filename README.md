@@ -102,4 +102,4 @@ The original boiler plate was originally made by Fudgey, then I did some modific
 Also thanks to:
 ItsMonty.eth for the original NFT Transfer code in the [LooPyMinty](https://github.com/Montspy/LooPyMinty) repo which I converted to C#.
 Also, thanks to Taranasus for his [LoopringSharp](https://github.com/taranasus/LoopringSharp) repo for the ECDSA signing which I also used.
-Fudgey's PoseidonSharp librarywas used for generating the Poseidon hashes and EDDSA signing.
+Fudgey's PoseidonSharp library was used for generating the Poseidon hashes and EDDSA signing.
