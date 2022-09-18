@@ -1,7 +1,7 @@
 ![](https://github.com/cobmin/LoopDropSharp/blob/Development/GitHubBanner.png)
-Find Nft holders, airdrop Nfts, mass transfer cryto, and more on Loopring. Quickly find what you need and send. Save time and money with LoopDropSharp.    
+### Find Nft holders, airdrop Nfts, mass transfer cryto, and more on Loopring. Quickly find what you need and send. Save time and money with LoopDropSharp.    
 
-https://cobmin.io/posts/Airdrop-Nfts-on-Loopring
+https://cobmin.io/posts/LoopDropSharp
 
 ## Setup
 
@@ -27,20 +27,30 @@ You will need to change the "appsettings.json" file in the project directory wit
   }
 }
 ```
-After setting up the appsettings.json, launch LoopDropSharp and follow the prompts.
+After setting up the appsettings.json, launch LoopDropSharp and get started.
 
-## Text File setup
-Wallet Address setup for: 1. Airdrop the same NFT to any users.
-In the walletAddresses.txt located in the project directory add your wallet addresses. You will have one wallet address on one line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS. 
+## Index.txt setup
 
-Wallet Address setup for: 2. Airdrop unique NFTs to any users
-In the walletAddresses.txt located in the project directory add your wallet address a comma and then the nft data (example: 0x4a71e0267207cec67c78df8857d81c508d43b00d,0x103cb20d3b310873f711d25758d57f18ba77a6b7842ae605d662e0ddd908ed5a). You will have one wallet address and nft data on each line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
+### 2. Find Nft Datas from Nft Ids.
+In the Index.txt located in the project directory add Nft Ids. You will have one Nft Data per line.
 
-Nft Data setup for: 4. Find Nft Holders from Nft Data.
-In the nftData.txt located in the project directory add your Nft Data. You will have one Nft Data on one line. 
+### 4. Find Nft Holders from Nft Data.
+In the Index.txt located in the project directory add your Nft Data. You will have one Nft Data per line.
 
-Wallet Address setup for: 7. Airdrop LRC/ETH to any users.
-In the walletAddresses.txt located in the project directory add your wallet addresses. You will have one wallet address on one line. Each wallet address will be one transfer of LRC/ETH. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS. 
+### 6. Find Nft Holders who own all given Nft Data
+In the Index.txt located in the project directory add your Nft Data. You will have one Nft Data per line.
+
+### 7. Airdrop the same NFT to any users.
+In the Index.txt located in the project directory add your wallet addresses. You will have one wallet address per line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
+
+### 8. Airdrop unique NFTs to any users
+In the Index.txt located in the project directory add your wallet address a comma and then the nft data (example: 0x4a71e0267207cec67c78df8857d81c508d43b00d,0x103cb20d3b310873f711d25758d57f18ba77a6b7842ae605d662e0ddd908ed5a). You will have one wallet address and nft data per line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
+
+### 9. Airdrop LRC/ETH to any users.
+In the Index.txt located in the project directory add your wallet addresses. You will have one wallet address per line. Each wallet address will be one transfer of LRC/ETH. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
+
+### 10. Airdrop LRC/ETH to any users with different amounts
+In the Index.txt located in the project directory add your wallet address a comma and then the amount of LRC/ETH to send (example: 0x4a71e0267207cec67c78df8857d81c508d43b00d,50.25). You will have one wallet address and one amount per line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
 
 When transferring, a successful Nft transfer will return the following JSON response:
 
