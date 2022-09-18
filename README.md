@@ -7,7 +7,7 @@
 
 ## Setup
 
-Download one of the compiled releases in the [Releases](https://github.com/cobmin/LoopDropSharp/releases/tag/v1.0.0) section and unzip it into a location of your choice. You will need to edit the included appsettings.json file with your own Loopring details. 
+Download one of the compiled releases in the [Releases](https://github.com/cobmin/LoopDropSharp/releases) section and unzip it into a location of your choice. You will need to edit the included appsettings.json file with your own Loopring details. 
 
 Here is a video going over the setup: https://youtu.be/P0EvuxfpCR4
 
