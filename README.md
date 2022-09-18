@@ -39,28 +39,28 @@ You will need to change the "appsettings.json" file in the project directory wit
 ```
 After setting up the appsettings.json, launch LoopDropSharp and get started.
 
-## Index.txt setup
+## Input.txt setup
 
 ### 2. Find Nft Datas from Nft Ids.
-In the Index.txt located in the project directory add Nft Ids. You will have one Nft Id per line.
+In the Input.txt located in the project directory add Nft Ids. You will have one Nft Id per line.
 
 ### 4. Find Nft Holders from Nft Data.
-In the Index.txt located in the project directory add your Nft Data. You will have one Nft Data per line.
+In the Input.txt located in the project directory add your Nft Data. You will have one Nft Data per line.
 
 ### 6. Find Nft Holders who own all given Nft Data
-In the Index.txt located in the project directory add your Nft Data. You will have one Nft Data per line.
+In the Input.txt located in the project directory add your Nft Data. You will have one Nft Data per line.
 
 ### 7. Airdrop the same NFT to any users.
-In the Index.txt located in the project directory add your wallet addresses. You will have one wallet address per line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
+In the Input.txt located in the project directory add your wallet addresses. You will have one wallet address per line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
 
 ### 8. Airdrop unique NFTs to any users
-In the Index.txt located in the project directory add your wallet address a comma and then the nft data (example: 0x4a71e0267207cec67c78df8857d81c508d43b00d,0x103cb20d3b310873f711d25758d57f18ba77a6b7842ae605d662e0ddd908ed5a). You will have one wallet address and nft data per line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
+In the Input.txt located in the project directory add your wallet address a comma and then the nft data (example: 0x4a71e0267207cec67c78df8857d81c508d43b00d,0x103cb20d3b310873f711d25758d57f18ba77a6b7842ae605d662e0ddd908ed5a). You will have one wallet address and nft data per line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
 
 ### 9. Airdrop LRC/ETH to any users.
-In the Index.txt located in the project directory add your wallet addresses. You will have one wallet address per line. Each wallet address will be one transfer of LRC/ETH. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
+In the Input.txt located in the project directory add your wallet addresses. You will have one wallet address per line. Each wallet address will be one transfer of LRC/ETH. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
 
 ### 10. Airdrop LRC/ETH to any users with different amounts
-In the Index.txt located in the project directory add your wallet address a comma and then the amount of LRC/ETH to send (example: 0x4a71e0267207cec67c78df8857d81c508d43b00d,50.25). You will have one wallet address and one amount per line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
+In the Input.txt located in the project directory add your wallet address a comma and then the amount of LRC/ETH to send (example: 0x4a71e0267207cec67c78df8857d81c508d43b00d,50.25). You will have one wallet address and one amount per line. Each wallet address will be one transfer. Be sure to have enough LRC/ETH for each transfer. You can add a long wallet address or the ENS.
 
 ## Banish.txt setup
 In the Banish.txt located in the project directory add wallet addresses that you do not want to send to. If you have a wallet address that you never want to airdrop an Nft to or send crypto to then you can place them on this list. The application checks this list before sending Nfts or crypto. You can add a long wallet address or the ENS.
