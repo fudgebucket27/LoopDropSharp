@@ -322,7 +322,7 @@ namespace LoopDropSharp
         {
             if (validAddress.Count > 0)
             {
-                Font.SetTextToGreen($"The following were valid addresses that did receive '{nftMetadataName}'.");
+                Font.SetTextToBlue($"The following were valid addresses that did receive '{nftMetadataName}'.");
                 foreach (var address in validAddress)
                 {
                     Console.WriteLine(address);
@@ -349,7 +349,7 @@ namespace LoopDropSharp
         {
             if (validAddress.Count > 0)
             {
-                Font.SetTextToGreen($"The following were valid addresses that did receive their Nft.");
+                Font.SetTextToBlue($"The following were valid addresses that did receive their Nft.");
                 foreach (var address in validAddress)
                 {
                     Console.WriteLine(address);
@@ -376,7 +376,7 @@ namespace LoopDropSharp
         {
             if (validAddress.Count > 0)
             {
-                Font.SetTextToGreen($"The following were valid addresses that did receive {transferTokenSymbol}.");
+                Font.SetTextToBlue($"The following were valid addresses that did receive {transferTokenSymbol}.");
                 foreach (var address in validAddress)
                 {
                     Console.WriteLine(address);

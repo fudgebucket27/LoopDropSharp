@@ -180,7 +180,6 @@ while (userResponseReadyToMoveOn == "yes")
         #endregion case 3
         #region case 4
         case "4":
-            string userResponseOnFileSetup = "";
             Font.SetTextToBlue(allUtilities.ElementAt(4).Value);
             Font.SetTextToBlue("Here you will get all the wallet addresses that hold the given Nft Data.");
             Font.SetTextToWhite("Let's get started.");
@@ -854,7 +853,7 @@ while (userResponseReadyToMoveOn == "yes")
             int transferTokenId = 3;
             string transferTokenSymbol = "";
             Font.SetTextToBlue(allUtilities.ElementAt(9).Value);
-            Font.SetTextToPurple($"Here you will airdrop LRC/ETH to many users.");
+            Font.SetTextToBlue($"Here you will airdrop LRC/ETH to many users.");
             Font.SetTextToWhite("Let's get started.");
             howManyWallets = Utils.CheckInputDotTxt();
             Font.SetTextToGreen($"You will be transfering to {howManyWallets} wallets.");
