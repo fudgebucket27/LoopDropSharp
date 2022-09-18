@@ -7,10 +7,18 @@
 
 ## Setup
 
+Download one of the compiled releases in the [Releases](https://github.com/cobmin/LoopDropSharp/releases/tag/v1.0.0) section and unzip it into a location of your choice. You will need to edit the included appsettings.json file with your own Loopring details. 
+
 Here is a video going over the setup: https://youtu.be/P0EvuxfpCR4
 
 This application uses a ***MetaMask/GameStop*** private key to sign the transfers. You will need to export that out from your metamask/gamestop Wallet. You can export the Loopring related account details from the "Security" tab while logged into https://loopring.io. Make sure these details are from the same Wallet. *Note* that you cannot perform transfers with a Loopring wallet
 
+macOS users: You also need to run the following command in the unzipped folder of LoopDropSharp to turn it into an executable in order to run it. You may also need to add it as a trusted application if it get's blocked from running (Settings > Security & Privacy).
+
+```
+chmod +x LoopDropSharp
+If compiling yourself please read the section about it below.
+```
 DO NOT SHARE ANY API OR PRIVATE KEYS with anyone else!!!!!!! 
 
 You will need to change the "appsettings.json" file in the project directory with the necessary information. The video above covers this. 
@@ -20,7 +28,7 @@ You will need to change the "appsettings.json" file in the project directory wit
   "Settings": {
     "LoopringApiKey": "ksdBlahblah", //Your loopring api key.  DO NOT SHARE THIS AT ALL.
     "LoopringPrivateKey": "0xblahblah", //Your loopring private key.  DO NOT SHARE THIS AT ALL.
-    "MetamaskPrivateKey": "asadasdBLahBlah", //Private key from metamask. DO NOT SHARE THIS AT ALL.
+    "MMorGMEPrivateKey": "asadasdBLahBlah", //Private key from metamask. DO NOT SHARE THIS AT ALL.
     "LoopringAddress": "0xblahabla", //Your loopring address
     "LoopringAccountId": 40940, //Your loopring account id
     "ValidUntil": 1700000000, //How long this transfer should be valid for. Shouldn't have to change this value
@@ -83,8 +91,13 @@ a successful crypto transfer will return the following JSON response:
 
 More information: https://cobmin.io/posts/LoopDropSharp
 
+### Supporting Me
+If you would like to support me you can purchase one of my Nfts here, https://loopexchange.art/collection/flowers or donate to my Loopring wallet, jacobhuber.eth.
+
+<img src="https://user-images.githubusercontent.com/97369738/189735788-5ca5ff22-3e28-4c2d-9185-b1121d78a6e2.jpeg" width="150" />
+
 ## Credits
-The original boiler plate was originally made by Fudgey, then I did some modifications with his help. It was time for LoopDropSharp to be created.
+The original boiler plate was originally made by Fudgey, then I did some modifications. It was then time for LoopDropSharp to be created.
 
 Also thanks to:
 ItsMonty.eth for the original NFT Transfer code in the [LooPyMinty](https://github.com/Montspy/LooPyMinty) repo which I converted to C#.
