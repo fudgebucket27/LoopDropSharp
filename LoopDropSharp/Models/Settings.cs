@@ -16,6 +16,6 @@ namespace LoopDropSharp
         public int MaxFeeTokenId { get; set; }
         public string Exchange { get; set; }
 
-        public string MetamaskPrivateKey { get; set; }
+        public string MMorGMEPrivateKey { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,7 +36,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting storage id: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting storage id: {httpException.Message}");
                 return null;
             }
         }
@@ -55,7 +56,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting off chain fee: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting off chain fee: {httpException.Message}");
                 return null;
             }
         }
@@ -105,7 +106,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error submitting nft transfer: {httpException.Message}");
+                Font.SetTextToWhite($"Error submitting nft transfer: {httpException.Message}");
                 return null;
             }
         }
@@ -154,7 +155,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error submitting token transfer: {httpException.Message}");
+                Font.SetTextToWhite($"Error submitting token transfer: {httpException.Message}");
                 return null;
             }
         }
@@ -172,45 +173,106 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting ens: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting ens: {httpException.Message}");
                 return null;
             }
+        }
+        public async Task<string> CheckForEthAddress(string apiKey, string address)
+        {
+            string minterForNftData = address;
+            if (address.Contains(".eth"))
+            {
+                var varHexAddress = await GetHexAddress(apiKey, minterForNftData);
+                if (!String.IsNullOrEmpty(varHexAddress.data))
+                {
+                    minterForNftData = varHexAddress.data;
+                    return minterForNftData;
+                }
+                else
+                {
+                    Font.SetTextToYellow($"{minterForNftData} is an invalid address");
+                    return null;
+                }
+            }
+            return address;
         }
 
         public async Task<NftBalance> GetTokenId(string apiKey, int accountId, string nftData)
         {
+            var data = new NftBalance();
+            var counter = 0;
             var request = new RestRequest("/api/v3/user/nft/balances");
             request.AddHeader("x-api-key", apiKey);
             request.AddParameter("accountId", accountId);
             request.AddParameter("nftDatas", nftData);
             try
             {
-                var response = await _client.GetAsync(request);
-                var data = JsonConvert.DeserializeObject<NftBalance>(response.Content!);
+                    var response = await _client.GetAsync(request);
+                    data = JsonConvert.DeserializeObject<NftBalance>(response.Content!);
+                    counter++;
                 return data;
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
                 return null;
             }
         }
 
-        public async Task<NftData> GetNftData(string nftId, string minter, string tokenAddress)
+        public async Task<NftBalance> GetTokenIdWithCheck(string apiKey, int accountId, string nftData)
         {
+            var data = new NftBalance();
+            var counter = 0;
+            var request = new RestRequest("/api/v3/user/nft/balances");
+            request.AddHeader("x-api-key", apiKey);
+            request.AddParameter("accountId", accountId);
+            request.AddParameter("nftDatas", nftData);
+            try
+            {
+                do
+                {
+                    if (counter != 0)
+                    {
+                        Font.SetTextToYellow("This is not an NftData or this Nft isn't in your wallet. Please enter in a correct one.");
+                        nftData = Console.ReadLine();
+                        request.AddOrUpdateParameter("nftDatas", nftData);
+                    }
+                    var response = await _client.GetAsync(request);
+                    data = JsonConvert.DeserializeObject<NftBalance>(response.Content!);
+                    counter++;
+                } while (data.data.Count == 0);
+                return data;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
+                return null;
+            }
+        }
+
+        public async Task<NftData> GetNftData(string apiKey, string nftId, string minter, string tokenAddress)
+        {
+            var data = new NftData();
             var request = new RestRequest("/api/v3/nft/info/nftData");
+            request.AddHeader("X-API-KEY", apiKey);
             request.AddParameter("nftId", nftId);
             request.AddParameter("minter", minter);
             request.AddParameter("tokenAddress", tokenAddress);
             try
             {
-                var response = await _client.GetAsync(request);
-                var data = JsonConvert.DeserializeObject<NftData>(response.Content!);
+                    var response = await _client.GetAsync(request);
+                    data = JsonConvert.DeserializeObject<NftData>(response.Content!);
+                Thread.Sleep(20);
                 return data;
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                if (httpException.Message == "Request failed with status code BadRequest")
+                {
+                    Font.SetTextToRed("The above information did not find an Nft Data. Please, try again.");
+                    return null;
+                }
+                Font.SetTextToWhite($"Error getting NftData: {httpException.Message}");
                 return null;
             }
         }
@@ -242,7 +304,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
                 return null;
             }
         }
@@ -261,7 +323,7 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
                 return null;
             }
         }
@@ -279,7 +341,30 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
+                return null;
+            }
+        }
+
+        public async Task<AccountInformation> GetUserAccountInformationFromOwner(string owner)
+        {
+            var request = new RestRequest("/api/v3/account");
+            request.AddParameter("owner", owner);
+            try
+            {
+                var response = await _client.GetAsync(request);
+                var data = JsonConvert.DeserializeObject<AccountInformation>(response.Content!);
+                Thread.Sleep(10);
+                return data;
+            }
+            catch (HttpRequestException httpException)
+            {
+                if (httpException.Message == "Request failed with status code BadRequest")
+                {
+                    Font.SetTextToRed("The above information did not find an account. Please, try again.");
+                    return null;
+                }
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
                 return null;
             }
         }
@@ -310,7 +395,56 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting TokenId: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
+                return null;
+            }
+        }
+
+        public async Task<List<NftData>> GetUserMintedNftsWithCollection(string apiKey, int accountId, string collectionId)
+        {
+            Font.SetTextToBlue("Starting...");
+            Font.SetTextToYellow("This may take a while depending on the minter and collection.");
+            var allDataMintsAndTotal = new List<MintsAndTotal>();
+            var allDataMintsAndTotalInCollection = new List<NftData>();
+            var request = new RestRequest("/api/v3/user/nft/mints");
+            request.AddHeader("X-API-KEY", apiKey);
+            request.AddParameter("accountId", accountId);
+            request.AddParameter("limit", 50);
+            try
+            {
+                var response = await _client.GetAsync(request);
+                var data = JsonConvert.DeserializeObject<MintsAndTotal>(response.Content!);
+                var total = data.totalNum;
+                allDataMintsAndTotal.Add(data);
+                while (total > 50)
+                {
+                    total = total - 50;
+                    var createdAt = allDataMintsAndTotal.LastOrDefault().mints.LastOrDefault().createdAt;
+                    request.AddOrUpdateParameter("end", createdAt);
+                    response = await _client.GetAsync(request);
+                    var moreData = JsonConvert.DeserializeObject<MintsAndTotal>(response.Content!);
+                    allDataMintsAndTotal.Add(moreData);
+                }
+                foreach (var item in allDataMintsAndTotal)
+                {
+                    var mints = item.mints;
+                    foreach (var mint in mints)
+                    {
+                        var nftDataInformationList = await GetNftInformationFromNftData(apiKey, mint.nftData);
+                        foreach (var nftDataInformation in nftDataInformationList)
+                        {
+                            if (nftDataInformation.tokenAddress == collectionId)
+                            {
+                                allDataMintsAndTotalInCollection.Add(nftDataInformation);
+                            }
+                        }
+                    }
+                }
+                return allDataMintsAndTotalInCollection;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
                 return null;
             }
         }
@@ -331,9 +465,66 @@ namespace LoopDropSharp
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine($"Error getting transfer off chain fee: {httpException.Message}");
+                Font.SetTextToWhite($"Error getting transfer off chain fee: {httpException.Message}");
                 return null;
             }
+        }
+
+        public async Task<List<NftData>> GetNftInformationFromNftData(string apiKey, string nftData)
+        {
+            var request = new RestRequest("/api/v3/nft/info/nfts");
+            request.AddHeader("x-api-key", apiKey);
+            request.AddParameter("nftDatas", nftData);
+            try
+            {
+                var response = await _client.GetAsync(request);
+                var data = JsonConvert.DeserializeObject<List<NftData>>(response.Content!);
+                Thread.Sleep(100);
+                return data;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Font.SetTextToWhite($"Error getting transfer off chain fee: {httpException.Message}");
+                return null;
+            }
+        }
+
+        public async Task<bool> CheckBanishTextFile(string toAddressInitial, string toAddress, string loopringApiKey)
+        {
+            List<string> banishAddresses = new List<string>();
+            bool banned;
+            string banishAddress;
+            using (StreamReader sr = new StreamReader("./Banish.txt"))
+            {
+                while ((banishAddress = sr.ReadLine()) != null)
+                {
+                    if (banishAddress.Contains(".eth"))
+                    {
+                        Thread.Sleep(100);
+                        var varHexAddress = await GetHexAddress(loopringApiKey, banishAddress);
+                        if (!String.IsNullOrEmpty(varHexAddress.data))
+                        {
+                            banishAddress = varHexAddress.data.ToLower().Trim();
+                        }
+                        else
+                        {
+                            //invalidAddress.Add(toAddressInitial);
+                            Console.WriteLine($"Invalid address: {banishAddress}. Could not find an associated wallet.");
+                            //continue;
+                        }
+                    }
+                    banishAddresses.Add(banishAddress.ToLower().Trim());
+                }
+            }
+            if (banishAddresses.Contains(toAddress) || banishAddresses.Contains(toAddressInitial.Trim().ToLower()))
+            {
+                banned = true;
+            }
+            else
+            {
+                banned = false;
+            }
+            return banned;
         }
 
         public void Dispose()
