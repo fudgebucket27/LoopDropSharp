@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LoopDropSharp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,16 @@ using System.Threading.Tasks;
 
 namespace LoopDropSharp.Helpers
 {
+    public class MenuAndUtility
+    {
+        public Dictionary<string, string> allUtilities { get; set; }
+        public string userResponseOnUtility { get; set; }
+
+
+    }
     public class Menu
     {
-        public static void BannerForLoopDropSharp()
+        public static string BannerForLoopDropSharp()
         {
             // Initial Information and Questions
             Console.Title = "LoopDropSharp: Airdrop Nfts and Crypto";
@@ -29,8 +37,10 @@ namespace LoopDropSharp.Helpers
             Font.SetTextToDarkGray("If you have any questions, start at https://cobmin.io/posts/Airdrop-Nfts-on-Loopring");
             Font.SetREADMEFontColorDarkGray("Find information on the setup files in the ", "README", " at https://github.com/cobmin/LoopDropSharp/blob/master/README.md");
             Font.SetTextToGreen("Ready to start?");
+            var userResponseReadyToMoveOn = Utils.CheckYes();
+            return userResponseReadyToMoveOn;
         }
-        public static Dictionary<string, string> MenuForLoopDropSharp()
+        public static MenuAndUtility MenuForLoopDropSharp()
         {
             var allUtilities = new Dictionary<string, string>()
             {
@@ -67,7 +77,9 @@ namespace LoopDropSharp.Helpers
             Font.SetTextToPurple("     Tips/FAQs:");
             Font.SetTextToWhite($"\t 0. {allUtilities.ElementAt(0).Value}.");
             Font.SetTextToGreen("Which would you like to do?");
-            return allUtilities;
+            var userResponseOnUtility = Utils.CheckUtilityNumber(allUtilities.Count() - 1);
+            var menuAndUtility = new MenuAndUtility() { allUtilities = allUtilities , userResponseOnUtility = userResponseOnUtility };
+            return menuAndUtility;
 
         }
 
@@ -82,6 +94,19 @@ namespace LoopDropSharp.Helpers
             Font.SetTextToDarkGray("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
             Font.SetTextToDarkGray("|P|o|w|e|r| |t|o| |t|h|e| |C|r|e|a|t|o|r|s|");
             Font.SetTextToDarkGray("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
+        }
+
+        public static string EndOfLoopDropSharpFunctionality(List<string> validAddress, List<string> invalidAddress, 
+            List<string> banishAddress, List<MintsAndTotal> userMintsAndTotalList, List<NftHoldersAndTotal> nftHoldersAndTotalList
+            )
+        {
+            validAddress.Clear();
+            invalidAddress.Clear();
+            banishAddress.Clear();
+            userMintsAndTotalList.Clear();
+            Font.SetTextToGreen("Start a new functionality?");
+            var userResponseReadyToMoveOn = Utils.CheckYesOrNo();
+            return userResponseReadyToMoveOn;
         }
     }
 }

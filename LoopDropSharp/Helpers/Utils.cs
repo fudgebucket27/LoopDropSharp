@@ -143,7 +143,7 @@ namespace LoopDropSharp
             return userResponse;
         }
 
-        public static int CheckInputDotTxt()
+        public static int CheckInputDotTxt(string fileName)
         {
             StreamReader sr;
             string walletAddresses;
@@ -154,17 +154,17 @@ namespace LoopDropSharp
             {
                 if (counter == 0)
                 {
-                    Font.SetTextToGreenInline("Did you setup your Input.txt? ");
-                    Font.SetREADMEFontColorDarkGray("Check the ", "README", $" for Input.txt setup.");
+                    Font.SetTextToGreenInline($"Did you setup your {fileName}? ");
+                    Font.SetREADMEFontColorDarkGray("Check the ", "README", $" for {fileName} setup.");
                     userResponseOnWalletSetup = CheckYes();
-                    sr = new StreamReader("./Input.txt");
+                    sr = new StreamReader($"./{fileName}");
                     counter++;
                 }
                 else
                 {
                     Font.SetREADMEFontColorYellow("It doesn't look like you did. Please refer to the ","README", " and respond yes when you are ready.");
                     userResponseOnWalletSetup = CheckYes();
-                    sr = new StreamReader("./Input.txt");
+                    sr = new StreamReader($"./{fileName}");
                 }
                 walletAddresses = sr.ReadToEnd().Replace("\r\n", "\r");
                 howManyWalletAddresses = walletAddresses.Split('\r').Length;
@@ -180,7 +180,7 @@ namespace LoopDropSharp
             } while (walletAddresses == "");
             return howManyWalletAddresses;
         }
-        public static int CheckInputDotTxtTwoInputs()
+        public static int CheckInputDotTxtTwoInputs(string fileName)
         {
             StreamReader sr;
             string walletAddresses;
@@ -191,10 +191,10 @@ namespace LoopDropSharp
             {
                 if (counter == 0)
                 {
-                    Font.SetTextToGreenInline("Did you setup your Input.txt? ");
-                    Font.SetREADMEFontColorDarkGray("Check the ", "README", $" for Input.txt setup.");
+                    Font.SetTextToGreenInline($"Did you setup your {fileName}? ");
+                    Font.SetREADMEFontColorDarkGray($"Check the ", "README", $" for {fileName} setup.");
                     CheckYes();
-                    sr = new StreamReader("./Input.txt");
+                    sr = new StreamReader($"./{fileName}");
                     counter++;
                 }
                 else
@@ -204,7 +204,7 @@ namespace LoopDropSharp
                         Font.SetREADMEFontColorYellow("It doesn't look like you did. Please refer to the ", "README", " and respond yes when you are ready.");
                     }
                     CheckYes();
-                    sr = new StreamReader("./Input.txt");
+                    sr = new StreamReader($"./{fileName}");
                 }
                 walletAddresses = sr.ReadToEnd().Replace("\r\n", "\r");
                 howManyWalletAddresses = walletAddresses.Split('\r').Length;
@@ -219,13 +219,13 @@ namespace LoopDropSharp
                 sr.Dispose();
                 try
                 {
-                    sr = new StreamReader("./Input.txt");
+                    sr = new StreamReader($"./{fileName}");
                     string[] walletAddressLineArray = sr.ReadLine().Split(',');
                     var toAddress = walletAddressLineArray[0].ToLower().Trim();
                 }
                 catch (Exception)
                 {
-                    Font.SetTextToYellow("It looks like your Input.txt needs the walletAddress,NftData.");
+                    Font.SetTextToYellow($"It looks like your {fileName} needs the walletAddress,NftData.");
                     Font.SetTextToBlue("respond yes when you are ready.");
                     noDoubleWarning = true;
                 }
@@ -233,7 +233,7 @@ namespace LoopDropSharp
             return howManyWalletAddresses;
         }
 
-        public static int GetInputDotTxtLines()
+        public static int GetInputDotTxtLines(string fileName)
         {
             StreamReader sr;
             string walletAddresses;
@@ -241,7 +241,7 @@ namespace LoopDropSharp
             do
             {
 
-                sr = new StreamReader("./Input.txt");
+                sr = new StreamReader($"./{fileName}");
                 walletAddresses = sr.ReadToEnd().Replace("\r\n", "\r");
                 howManyWalletAddresses = walletAddresses.Split('\r').Length;
                 if (walletAddresses.EndsWith('\r'))
@@ -257,7 +257,7 @@ namespace LoopDropSharp
             return howManyWalletAddresses;
         }
 
-        public static string CheckNftSendAmount(int howManyWallets, string userNftTokentotalNum)
+        public static string CheckNftSendAmount(int howManyWallets, string userNftTokentotalNum, string fileName)
         {
             string nftAmount;
             do
@@ -273,7 +273,7 @@ namespace LoopDropSharp
                 {
                     nftAmount = ReadLineWarningNoNullsForceInt("How many Nfts do you want to transfer to each address?");
                 } while (nftAmount == null);
-                howManyWallets = GetInputDotTxtLines();
+                howManyWallets = GetInputDotTxtLines(fileName);
             }
             return nftAmount;
         }

@@ -52,7 +52,8 @@ namespace LoopDropSharp
         Task<NftBalance> GetTokenId(string apiKey, int accountId, string nftData);
         Task<NftBalance> GetTokenIdWithCheck(string apiKey, int accountId, string nftData);
         Task<NftData> GetNftData(string apiKey, string nftId, string minter, string tokenAddress);
-        Task<List<NftHoldersAndTotal>> GetNftHoldersMultiple(string apiKey, string nftData);
+        Task<List<NftHolder>> GetNftHoldersMultiple(string apiKey, string nftData);
+        Task<List<NftHoldersAndTotal>> GetNftHoldersMultipleOld(string apiKey, string nftData);
         Task<NftHoldersAndTotal> GetNftHolders(string apiKey, string nftData);
         Task<AccountInformation> GetUserAccountInformation(string accountId);
         Task<AccountInformation> GetUserAccountInformationFromOwner(string owner);

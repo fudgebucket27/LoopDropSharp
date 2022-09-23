@@ -41,10 +41,18 @@ namespace LoopDropSharp
             Console.ResetColor();
             SetTextToDarkGray(end);
         }
-        public static void SetTextToBlue(string str) {  
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine($"{str}", Console.ForegroundColor);
-            Console.ResetColor();
+        public static void SetTextToBlue(string str) {
+            try
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine($"{str}", Console.ForegroundColor);
+                Console.ResetColor();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine(str);
+            }
+
         }
         public static void SetTextToBlueInline(string str)
         {
