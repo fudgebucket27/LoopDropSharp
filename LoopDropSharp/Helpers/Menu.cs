@@ -30,7 +30,7 @@ namespace LoopDropSharp.Helpers
             Font.SetTextToBlue("             __         __            ");
             Font.SetTextToBlue("|   _  _  _ |  \\ _ _  _(__ |_  _  _ _ ");
             Font.SetTextToBlue("|__(_)(_)[_)|__/[ (_)[_)__)[ )(_][ [_)");
-            Font.SetTextToBlue("         |           |Version 1.1.0|  ");
+            Font.SetTextToBlue("         |           |Version 1.1.1|  ");
             //Font.SetTextToDarkBlue("Query and send your Nfts");
             Font.SetTextToBlue("[Airdrop·Nfts·Crypto]");
             Console.WriteLine();
