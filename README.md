@@ -68,6 +68,7 @@ In the Input.txt located in the project directory add a wallet address a comma a
 ## Banish.txt setup
 In the Banish.txt located in the project directory add wallet addresses that you do not want to send to. If you have a wallet address that you never want to airdrop an Nft to or send crypto to then you can place them on this list. The application checks this list before sending Nfts or crypto. You can add a long wallet address or the ENS.
 
+LoopDropSharp Nft collection: https://loopexchange.art/collection/loopdropsharp
 More information: https://cobmin.io/posts/LoopDropSharp
 
 ### Supporting Me
