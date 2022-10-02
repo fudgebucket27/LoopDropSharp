@@ -28,7 +28,8 @@ namespace LoopDropSharp
                  long validUntil,
                  string eddsaSignature,
                  string ecdsaSignature,
-                 string nftData
+                 string nftData, 
+                 string transferMemo
                  );
         Task<string> SubmitTokenTransfer(
           string apiKey,

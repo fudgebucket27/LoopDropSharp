@@ -77,7 +77,8 @@ namespace LoopDropSharp
                  long validUntil,
                  string eddsaSignature,
                  string ecdsaSignature,
-                 string nftData
+                 string nftData,
+                 string transferMemo
             )
         {
             var request = new RestRequest("api/v3/nft/transfer");
@@ -98,6 +99,7 @@ namespace LoopDropSharp
             request.AddParameter("validUntil", validUntil);
             request.AddParameter("eddsaSignature", eddsaSignature);
             request.AddParameter("ecdsaSignature", ecdsaSignature);
+            request.AddParameter("memo", transferMemo);
             try
             {
                 var response = await _client.ExecutePostAsync(request);
