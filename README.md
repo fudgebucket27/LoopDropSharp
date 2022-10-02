@@ -3,7 +3,7 @@
 
 ## Current Functionality:
 
-![image](https://user-images.githubusercontent.com/97369738/190919395-be77ff4f-2bd8-4281-9a13-4e5e2b8df3b3.png)
+![image](https://user-images.githubusercontent.com/97369738/193433385-44781cc2-463c-4857-be1a-5eb5f30fef75.png)
 
 ## Setup
 
