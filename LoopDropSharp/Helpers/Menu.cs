@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LoopDropSharp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,16 @@ using System.Threading.Tasks;
 
 namespace LoopDropSharp.Helpers
 {
+    public class MenuAndUtility
+    {
+        public Dictionary<string, string> allUtilities { get; set; }
+        public string userResponseOnUtility { get; set; }
+
+
+    }
     public class Menu
     {
-        public static void BannerForLoopDropSharp()
+        public static string BannerForLoopDropSharp()
         {
             // Initial Information and Questions
             Console.Title = "LoopDropSharp: Airdrop Nfts and Crypto";
@@ -22,15 +30,17 @@ namespace LoopDropSharp.Helpers
             Font.SetTextToBlue("             __         __            ");
             Font.SetTextToBlue("|   _  _  _ |  \\ _ _  _(__ |_  _  _ _ ");
             Font.SetTextToBlue("|__(_)(_)[_)|__/[ (_)[_)__)[ )(_][ [_)");
-            Font.SetTextToBlue("         |           |Version 1.1.0|  ");
+            Font.SetTextToBlue("         |           |Version 1.2.0|  ");
             //Font.SetTextToDarkBlue("Query and send your Nfts");
             Font.SetTextToBlue("[Airdrop·Nfts·Crypto]");
             Console.WriteLine();
             Font.SetTextToDarkGray("If you have any questions, start at https://cobmin.io/posts/Airdrop-Nfts-on-Loopring");
             Font.SetREADMEFontColorDarkGray("Find information on the setup files in the ", "README", " at https://github.com/cobmin/LoopDropSharp/blob/master/README.md");
             Font.SetTextToGreen("Ready to start?");
+            var userResponseReadyToMoveOn = Utils.CheckYes();
+            return userResponseReadyToMoveOn;
         }
-        public static Dictionary<string, string> MenuForLoopDropSharp()
+        public static MenuAndUtility MenuForLoopDropSharp()
         {
             var allUtilities = new Dictionary<string, string>()
             {
@@ -42,9 +52,10 @@ namespace LoopDropSharp.Helpers
                 {"utilityFive", "Find Nft Holders from an Ens/Wallet"},
                 {"utilitySix", "Find Nft Holders who own all given Nft Data"},
                 {"utilitySeven", "Airdrop the same NFT to any users"},
-                {"utilityEight", "Airdrop unique NFTs to any users"},
-                {"utilityNine", "Airdrop LRC/ETH to any users"},
-                {"utilityTen", "Airdrop LRC/ETH to any users with different amounts"}
+                {"utilityEight", "Airdrop the same NFT to any users with different amounts"},
+                {"utilityNine", "Airdrop unique NFTs to any users"},
+                {"utilityTen", "Airdrop LRC/ETH to any users"},
+                {"utilityEleven", "Airdrop LRC/ETH to any users with different amounts"}
             };
             // Menu of the Utilities. need to be sure to change numbers here and in the CheckUtilityNumber
             Font.SetTextToBlue("This application can currently perform the following:");
@@ -61,13 +72,16 @@ namespace LoopDropSharp.Helpers
             Font.SetTextToDarkPurple("        Nfts");
             Font.SetTextToWhite($"\t 7. {allUtilities.ElementAt(7).Value}.");
             Font.SetTextToWhite($"\t 8. {allUtilities.ElementAt(8).Value}.");
-            Font.SetTextToDarkPurple("        Crypto");
             Font.SetTextToWhite($"\t 9. {allUtilities.ElementAt(9).Value}.");
-            Font.SetTextToWhite($"\t10. {allUtilities.ElementAt(10).Value}.");
+            Font.SetTextToDarkPurple("        Crypto");
+            Font.SetTextToWhite($"\t 10. {allUtilities.ElementAt(10).Value}.");
+            Font.SetTextToWhite($"\t 11. {allUtilities.ElementAt(11).Value}.");
             Font.SetTextToPurple("     Tips/FAQs:");
             Font.SetTextToWhite($"\t 0. {allUtilities.ElementAt(0).Value}.");
             Font.SetTextToGreen("Which would you like to do?");
-            return allUtilities;
+            var userResponseOnUtility = Utils.CheckUtilityNumber(allUtilities.Count() - 1);
+            var menuAndUtility = new MenuAndUtility() { allUtilities = allUtilities , userResponseOnUtility = userResponseOnUtility };
+            return menuAndUtility;
 
         }
 
@@ -82,6 +96,19 @@ namespace LoopDropSharp.Helpers
             Font.SetTextToDarkGray("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
             Font.SetTextToDarkGray("|P|o|w|e|r| |t|o| |t|h|e| |C|r|e|a|t|o|r|s|");
             Font.SetTextToDarkGray("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
+        }
+
+        public static string EndOfLoopDropSharpFunctionality(List<string> validAddress, List<string> invalidAddress, 
+            List<string> banishAddress, List<MintsAndTotal> userMintsAndTotalList, List<NftHoldersAndTotal> nftHoldersAndTotalList
+            )
+        {
+            validAddress.Clear();
+            invalidAddress.Clear();
+            banishAddress.Clear();
+            userMintsAndTotalList.Clear();
+            Font.SetTextToGreen("Start a new functionality?");
+            var userResponseReadyToMoveOn = Utils.CheckYesOrNo();
+            return userResponseReadyToMoveOn;
         }
     }
 }

@@ -77,7 +77,8 @@ namespace LoopDropSharp
                  long validUntil,
                  string eddsaSignature,
                  string ecdsaSignature,
-                 string nftData
+                 string nftData,
+                 string transferMemo
             )
         {
             var request = new RestRequest("api/v3/nft/transfer");
@@ -98,6 +99,7 @@ namespace LoopDropSharp
             request.AddParameter("validUntil", validUntil);
             request.AddParameter("eddsaSignature", eddsaSignature);
             request.AddParameter("ecdsaSignature", ecdsaSignature);
+            request.AddParameter("memo", transferMemo);
             try
             {
                 var response = await _client.ExecutePostAsync(request);
@@ -179,7 +181,7 @@ namespace LoopDropSharp
         }
         public async Task<string> CheckForEthAddress(string apiKey, string address)
         {
-            string minterForNftData = address;
+            string minterForNftData = address.Trim().ToLower();
             if (address.Contains(".eth"))
             {
                 var varHexAddress = await GetHexAddress(apiKey, minterForNftData);
@@ -262,7 +264,7 @@ namespace LoopDropSharp
             {
                     var response = await _client.GetAsync(request);
                     data = JsonConvert.DeserializeObject<NftData>(response.Content!);
-                Thread.Sleep(20);
+                Thread.Sleep(100);
                 return data;
             }
             catch (HttpRequestException httpException)
@@ -277,7 +279,39 @@ namespace LoopDropSharp
             }
         }
 
-        public async Task<List<NftHoldersAndTotal>> GetNftHoldersMultiple(string apiKey, string nftData)
+        public async Task<List<NftHolder>> GetNftHoldersMultiple(string apiKey, string nftData)
+        {
+            var allData = new List<NftHolder>();
+            var request = new RestRequest("/api/v3/nft/info/nftHolders");
+            request.AddHeader("X-API-KEY", apiKey);
+            request.AddParameter("nftData", nftData);
+            request.AddParameter("limit", 100);
+            try
+            {
+                var offset = 100;
+                var response = await _client.GetAsync(request);
+                var data = JsonConvert.DeserializeObject<NftHoldersAndTotal>(response.Content!);
+                var total = data.totalNum;
+
+                allData.AddRange(data.nftHolders);
+                while (total > 100)
+                {
+                    total = total - 100;
+                    request.AddOrUpdateParameter("offset", offset);
+                    response = await _client.GetAsync(request);
+                    var moreData = JsonConvert.DeserializeObject<NftHoldersAndTotal>(response.Content!);
+                    allData.AddRange(moreData.nftHolders);
+                    offset = offset + 100;
+                }
+                return allData;
+            }
+            catch (HttpRequestException httpException)
+            {
+                Font.SetTextToWhite($"Error getting TokenId: {httpException.Message}");
+                return null;
+            }
+        }
+        public async Task<List<NftHoldersAndTotal>> GetNftHoldersMultipleOld(string apiKey, string nftData)
         {
             var allData = new List<NftHoldersAndTotal>();
             var request = new RestRequest("/api/v3/nft/info/nftHolders");
@@ -336,7 +370,7 @@ namespace LoopDropSharp
             {
                 var response = await _client.GetAsync(request);
                 var data = JsonConvert.DeserializeObject<AccountInformation>(response.Content!);
-                Thread.Sleep(10);
+                Thread.Sleep(100);
                 return data;
             }
             catch (HttpRequestException httpException)
@@ -354,7 +388,7 @@ namespace LoopDropSharp
             {
                 var response = await _client.GetAsync(request);
                 var data = JsonConvert.DeserializeObject<AccountInformation>(response.Content!);
-                Thread.Sleep(10);
+                Thread.Sleep(100);
                 return data;
             }
             catch (HttpRequestException httpException)
@@ -416,7 +450,7 @@ namespace LoopDropSharp
                 var data = JsonConvert.DeserializeObject<MintsAndTotal>(response.Content!);
                 var total = data.totalNum;
                 allDataMintsAndTotal.Add(data);
-                while (total > 50)
+                while (total >= 50)
                 {
                     total = total - 50;
                     var createdAt = allDataMintsAndTotal.LastOrDefault().mints.LastOrDefault().createdAt;
@@ -433,9 +467,15 @@ namespace LoopDropSharp
                         var nftDataInformationList = await GetNftInformationFromNftData(apiKey, mint.nftData);
                         foreach (var nftDataInformation in nftDataInformationList)
                         {
-                            if (nftDataInformation.tokenAddress == collectionId)
+                            if (nftDataInformation.tokenAddress.ToLower() == collectionId)
                             {
                                 allDataMintsAndTotalInCollection.Add(nftDataInformation);
+                            }
+                            else
+                            {
+                                Console.WriteLine(nftDataInformation.nftId);
+                                Console.WriteLine(nftDataInformation.minter);
+                                Console.WriteLine(nftDataInformation.tokenAddress);
                             }
                         }
                     }
